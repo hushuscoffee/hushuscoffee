@@ -1,10 +1,18 @@
 <!doctype html>
 <html lang="en">
-@include('partials._head')
+<head>
+  @include('partials._head')
+</head>
+
 <body>
-  @include('partials._messages')
-  @yield('content')
+  @include('partials._nav')
+
+  <div class="container" style="margin-top: 80px;">
+  @include('partials._messages') @yield('content')
   @include('partials._footer')
-  @yield('scripts')
+
+  </div>
+  <!-- end of .container -->
 </body>
+@include('partials._javascript') @yield('scripts')
 </html>

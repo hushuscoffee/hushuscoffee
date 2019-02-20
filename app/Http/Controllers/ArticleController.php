@@ -2,68 +2,49 @@
 
 namespace App\Http\Controllers;
 
-use App\Article;
 use Illuminate\Http\Request;
-use App\MasterCategory;
-use App\MasterShared;
-use Session;
-use Illuminate\Support\Facades\DB;
+
+use App\Http\Requests;
+use App\Category;
+use App\Shared;
+use App\Article;
 use Illuminate\Support\Facades\Input;
 use File;
 use Image;
-use App\Http\Requests;
+use Session;
+use Purifier;
 use Illuminate\Support\Facades\Auth;
 
 class ArticleController extends Controller
 {
-
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
-        $articles = Article::orderBy('id','desc')->paginate(6);
-        return view('article.index')->withArticles($articles);
+        return view('notes.index');
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
-        $this->data['shared'] = MasterShared::all();
-        $this->data['categorys'] = DB::table('master_categorys')->where('id', '<>', 1)->where('id', '<>', 2)->get();
-        return view('article.create',$this->data);
+        $categories = Category::all();
+        $shareds = Shared::all();
+        return view('articles.create')->withCategories($categories)->withShareds($shareds);
     }
 
-    public function show($slug)
-    {
-        $this->data['article'] = DB::table('articles')->where('slug', '=', $slug)->first();
-        return view('article.show',$this->data);
-    }
-
-    public function edit($slug)
-    {
-        $this->data['article'] = DB::table('articles')->where('slug', '=', $slug)->first();
-        $this->data['shared'] = MasterShared::all();
-        $this->data['categorys'] = DB::table('master_categorys')->where('id', '<>', 1)->where('id', '<>', 2)->get();
-        return view('article.edit',$this->data);
-    }
-
-    public function update(Request $request, $id)
-    {
-        $articles = Article::findOrFail($id);
-        $articles->title = $request->input('title');
-        $articles->description = $request->input('description');
-
-        if ($request->hasFile('file')) {
-            $image = Input::file('file');
-            $filename = time() . '.' . $image->getClientOriginalExtension();
-            $path = public_path('uploads/articles/' . $filename);
-            Image::make($image->getRealPath())->save($path);
-            $articles->file='uploads/articles/'.$filename;
-        }
-        $articles->save();
-
-        Session::flash('success','This article was successfully updated');
-
-        return redirect(route('personalize.showarticle',$articles->slug));
-    }
-
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
     public function store(Request $request)
     {
         $this->validate($request, [
@@ -77,193 +58,114 @@ class ArticleController extends Controller
 			$path = public_path('uploads/articles/' . $filename);
 			Image::make($image->getRealPath())->save($path);
         }
-        $article = new Article([
-            'id_status' => 1,
-            'id_shared' => $request->input('shared'),
-            'id_category' => $request->input('category'),
-            'id_user' => Auth::user()->id,
-            'title' => $request->input('title'),
-            'description' => $request->input('description'),
-            'file' => 'uploads/articles/'.$filename
-        ]);
+        $article = new Article;
+        $article->status_id = $request->status;
+        $article->shared_id = $request->shared;
+        $article->category_id = $request->category;
+        $article->user_id = Auth::user()->id;
+        $article->title = $request->title;
+        $article->description = Purifier::clean($request->description);
+        $article->image = 'uploads/articles/'.$filename;
+        
         $article->save();
         Session::flash('success', 'This article was successfully saved');
-        return redirect(route('personalize.showarticle',$article->slug));
+        
     }
 
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($slug)
+    {
+        $article= Article::where('slug', '=', $slug)->first();
+        $shareds = Shared::all();
+        $categories = Category::all();
+        return view('articles.edit')->withArticle($article)->withShareds($shareds)->withCategories($categories);
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        $this->validate($request, [
+            'title' => 'required|max:255',
+            'description' => 'required'
+        ]);
+        $article = Article::findOrFail($id);
+        $article->title = $request->input('title');
+        $article->description = $request->input('description');
+
+        if ($request->hasFile('image')) {
+            $image = Input::file('image');
+            $filename = time() . '.' . $image->getClientOriginalExtension();
+            $path = public_path('uploads/articles/' . $filename);
+            Image::make($image->getRealPath())->save($path);
+            $article->image='uploads/articles/'.$filename;
+        }
+        $article->save();
+
+        Session::flash('success','This article was successfully updated');
+
+        return redirect(route('myArticle.show',$article->slug));
+    }
+
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
-        $articles = Article::findOrFail($id);
-        $articles->delete();
-
-        // Session::flash('success', 'Deleted!');
-        Session::flash('success', 'The article was successfully deleted');
-        return redirect()->route('personalize.myarticle');
+        //
     }
 
-    public function recipe(){
+    public function indexEvents(){
         $key = Input::get('search');
         if (isset($key)) {
-            $this->data['articles'] = DB::table('articles')->where('title', 'like', '%' . $key . '%')->where('id_category', '=', 1)->where('id_shared', '=', 1)->orderBy('id','desc')->paginate(6);
+            $articles = Article::where('category_id','=',1)->where('title', 'like', '%' . $key . '%')->orderBy('id', 'desc')->paginate(6);
         } else {
-            $this->data['articles'] = DB::table('articles')->where('id_category', '=', 1)->where('id_shared', '=', 1)->orderBy('id','desc')->paginate(6);
-
-        }        
-        $this->data['category'] = 1;
-        if(Auth::check()){
-        $this->data['favorites'] = DB::table('favourites')->where('id_user', '=', Auth::user()->id)->get();
+            $articles = Article::where('category_id','=',1)->orderBy('id', 'desc')->paginate(6);
         }
-        return view('article.index',$this->data);
+        return view('articles.index')->withArticles($articles)->withCategory(1);
     }
 
-    public function recipeShow($slug){
-        $this->data['article'] = Article::where('slug', '=', $slug)->first();
-
-        $article = DB::table('articles')->where('slug', '=', $slug)->first();		       	      
-        $id_article=$article->id;
-        $this->data['ingredients'] = DB::table('ingredients')->where('id_article', '=', $id_article)->orderBy('id')->get();
-        $this->data['tools'] = DB::table('tools')->where('id_article', '=', $id_article)->orderBy('id')->get();
-        $this->data['steps'] = DB::table('steps')->where('id_article', '=', $id_article)->orderBy('id')->get();
-        return view('article.recipe',$this->data);
-    } 
-
-    public function brewing(){
+    public function indexNews(){
         $key = Input::get('search');
-if (isset($key)) {
-    $this->data['articles'] = DB::table('articles')->where('title', 'like', '%' . $key . '%')->where('id_category', '=', 2)->where('id_shared', '=', 1)->orderBy('id','desc')->paginate(6);
-} else {
-    $this->data['articles'] = DB::table('articles')->where('id_category', '=', 2)->where('id_shared', '=', 1)->orderBy('id','desc')->paginate(6);
-
-}
-        $this->data['category'] = 2;
-        if(Auth::check()){
-        $this->data['favorites'] = DB::table('favourites')->where('id_user', '=', Auth::user()->id)->get();
+        if (isset($key)) {
+            $articles = Article::where('category_id','=',2)->where('title', 'like', '%' . $key . '%')->orderBy('id', 'desc')->paginate(6);
+        } else {
+            $articles = Article::where('category_id','=',2)->orderBy('id', 'desc')->paginate(6);
         }
-        return view('article.index',$this->data);
+        return view('articles.index')->withArticles($articles)->withCategory(2);
     }
 
-    public function brewingShow($slug){
-        $this->data['article'] = Article::where('slug', '=', $slug)->first();
-        $article = DB::table('articles')->where('slug', '=', $slug)->first();		       	      
-        $id_article=$article->id;
-        $this->data['ingredients'] = DB::table('ingredients')->where('id_article', '=', $id_article)->orderBy('id')->get();
-        $this->data['tools'] = DB::table('tools')->where('id_article', '=', $id_article)->orderBy('id')->get();
-        $this->data['steps'] = DB::table('steps')->where('id_article', '=', $id_article)->orderBy('id')->get();
-        return view('article.brewing',$this->data);
-    }
-    // public function story(){
-    //     $this->data['articles'] = DB::table('articles')->where('id_category', '=', 3)->orderBy('id')->paginate(8);
-    //     $this->data['category'] = 3;
-    //     return view('article.index',$this->data);
-    // }
-
-    // public function storyShow($slug){
-    //     $this->data['article'] = DB::table('articles')->where('slug', '=', $slug)->first();
-    //     return view('article.show',$this->data);
-    // }
- 
-    public function tips(){
-        $key = Input::get('search');                    
-        if(isset($key)){
-            $this->data['articles'] = DB::table('articles')->where('title','like','%'.$key.'%')->where('id_category', '=', 4)->where('id_shared', '=', 1)->orderBy('id','desc')->paginate(6);
-        }else{
-        $this->data['articles'] = DB::table('articles')->where('id_category', '=', 4)->where('id_shared', '=', 1)->orderBy('id','desc')->paginate(6);
-        }
-        $this->data['category'] = 4;
-        if(Auth::check()){
-        $this->data['favorites'] = DB::table('favourites')->where('id_user', '=', Auth::user()->id)->get();
-        }
-
-        return view('article.index',$this->data);
-    }
-
-    public function tipsShow($slug){
-        $this->data['article'] = Article::where('slug', '=', $slug)->first();
-
-        return view('article.show',$this->data);
-    }
-    // public function info(){
-    //     $this->data['articles'] = DB::table('articles')->where('id_category', '=', 5)->orderBy('id')->paginate(8);
-    //     $this->data['category'] = 5;
-    //     return view('article.index',$this->data);
-    // }
-
-    // public function infoShow($slug){
-    //     $this->data['article'] = DB::table('articles')->where('slug', '=', $slug)->first();
-    //     return view('article.show',$this->data);
-    // }
-    public function news(){
+    public function indexTips(){
         $key = Input::get('search');
-        if(isset($key)){
-            $this->data['articles'] = DB::table('articles')->where('title','like','%'.$key.'%')->where('id_category', '=', 3)->where('id_shared', '=', 1)->orderBy('id','desc')->paginate(6);
-        }else{
-            $this->data['articles'] = DB::table('articles')->where('id_category', '=', 3)->where('id_shared', '=', 1)->orderBy('id','desc')->paginate(6);
+        if (isset($key)) {
+            $articles = Article::where('category_id','=',3)->where('title', 'like', '%' . $key . '%')->orderBy('id', 'desc')->paginate(6);
+        } else {
+            $articles = Article::where('category_id','=',3)->orderBy('id', 'desc')->paginate(6);
         }
-        $this->data['category'] = 3;
-        if(Auth::check()){
-        $this->data['favorites'] = DB::table('favourites')->where('id_user', '=', Auth::user()->id)->get();
-        }
-
-        return view('article.index',$this->data);
-    }
-
-    public function newsShow($slug){
-        $this->data['article'] = Article::where('slug', '=', $slug)->first();
-
-        return view('article.show',$this->data);
-    }
-    // public function trend(){
-    //     $this->data['articles'] = DB::table('articles')->where('id_category', '=', 7)->orderBy('id')->paginate(8);
-    //     $this->data['category'] = 7;
-    //     return view('article.index',$this->data);
-    // }
-
-    // public function trendShow($slug){
-    //     $this->data['article'] = DB::table('articles')->where('slug', '=', $slug)->first();
-    //     return view('article.show',$this->data);
-    // }
-    // public function people(){
-    //     $this->data['articles'] = DB::table('articles')->where('id_category', '=', 8)->orderBy('id')->paginate(8);
-    //     $this->data['category'] = 8;
-    //     return view('article.index',$this->data);
-    // }
-
-    // public function peopleShow($slug){
-    //     $this->data['article'] = DB::table('articles')->where('slug', '=', $slug)->first();
-    //     return view('article.show',$this->data);
-    // }
-    public function event(){
-        $key = Input::get('search');                    
-        if(isset($key)){
-            $this->data['articles'] = DB::table('articles')->where('title','like','%'.$key.'%')->where('id_category', '=', 5)->where('id_shared', '=', 1)->orderBy('id','desc')->paginate(6);
-        }else{
-        $this->data['articles'] = DB::table('articles')->where('id_category', '=', 5)->where('id_shared', '=', 1)->orderBy('id','desc')->paginate(6);
-        }
-        $this->data['category'] = 5;
-        if(Auth::check()){
-        $this->data['favorites'] = DB::table('favourites')->where('id_user', '=', Auth::user()->id)->get();
-        }
-        return view('article.index',$this->data);
-    }
-
-    public function eventShow($slug){
-        $this->data['article'] = Article::where('slug', '=', $slug)->first();
-
-        return view('article.show',$this->data);
-    }
-
-    public function share($id){
-        $article = Article::findOrFail($id);
-        $article->id_shared = 1;
-        $article->save();
-        Session::flash('success', 'The article was successfully shared and visible to public');
-        return redirect()->back();
-    }
-    public function unshare($id){
-        $article = Article::findOrFail($id);
-        $article->id_shared = 2;
-        $article->save();
-        Session::flash('success', 'The article was successfully unshared and visible to private only');
-        return redirect()->back();
+        return view('articles.index')->withArticles($articles)->withCategory(3);
     }
 }

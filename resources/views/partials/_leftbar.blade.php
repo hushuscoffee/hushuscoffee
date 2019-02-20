@@ -1,68 +1,165 @@
 <style>
-    a{
-        color:black;
+  .row {
+    margin-left: 0px;
+    margin-right: 0px;
+  }
+
+  #wrapper {
+    padding-left: 70px;
+    transition: all .4s ease 0s;
+    height: 100%
+  }
+
+  #sidebar-wrapper {
+    margin-left: -150px;
+    left: 70px;
+    width: 150px;
+    background: #222;
+    position: fixed;
+    height: 100%;
+    transition: all .4s ease 0s;
+  }
+
+  .sidebar-nav {
+    display: block;
+    float: left;
+    width: 150px;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  #page-content-wrapper {
+    padding-left: 0;
+    margin-left: 0;
+    width: 100%;
+    height: auto;
+  }
+
+  #wrapper.active {
+    padding-left: 150px;
+  }
+
+  #wrapper.active #sidebar-wrapper {
+    left: 150px;
+  }
+
+  #page-content-wrapper {
+    width: 100%;
+  }
+
+  #sidebar_menu li a,
+  .sidebar-nav li a {
+    color: #fff;
+    display: block;
+    float: left;
+    text-decoration: none;
+    width: 150px;
+    background: #252525;
+    border-top: 1px solid #373737;
+    border-bottom: 1px solid #1A1A1A;
+    -webkit-transition: background .5s;
+    -moz-transition: background .5s;
+    -o-transition: background .5s;
+    -ms-transition: background .5s;
+    transition: background .5s;
+  }
+
+  .sidebar_name {
+    padding-top: 25px;
+    color: #fff;
+    opacity: .7;
+  }
+
+  .sidebar-nav li {
+    line-height: 40px;
+    text-indent: 20px;
+  }
+
+  .sidebar-nav li a {
+    color: #fff;
+    display: block;
+    text-decoration: none;
+  }
+
+  .sidebar-nav li a:hover {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.2);
+    text-decoration: none;
+  }
+
+  .sidebar-nav li a:active,
+  .sidebar-nav li a:focus {
+    text-decoration: none;
+  }
+
+  .sidebar-nav>.sidebar-brand {
+    height: 65px;
+    line-height: 60px;
+    font-size: 18px;
+  }
+
+  .sidebar-nav>.sidebar-brand a {
+    color: #fff;
+  }
+
+  .sidebar-nav>.sidebar-brand a:hover {
+    color: #fff;
+    background: none;
+  }
+
+  #main_icon {
+    float: right;
+    padding-right: 65px;
+    padding-top: 20px;
+  }
+
+  .sub_icon {
+    float: right;
+    padding-right: 65px;
+    padding-top: 10px;
+  }
+
+  .content-header {
+    height: 65px;
+    line-height: 65px;
+  }
+
+  .content-header h1 {
+    margin: 0;
+    margin-left: 20px;
+    line-height: 65px;
+    display: inline-block;
+  }
+
+  @media (max-width:767px) {
+    #wrapper {
+      padding-left: 70px;
+      transition: all .4s ease 0s;
     }
-    a:hover{
-        color:grey;
+    #sidebar-wrapper {
+      left: 70px;
     }
+    #wrapper.active {
+      padding-left: 150px;
+    }
+    #wrapper.active #sidebar-wrapper {
+      left: 150px;
+      width: 150px;
+      transition: all .4s ease 0s;
+    }
+  }
 </style>
-<br><br>
-<div id="accordion">
 
-  <div class="card">
-    <div class="card-header"  style="background-color:#ffcd22">
-      <a class="card-link btn-block" data-toggle="collapse" href="#collapseOne">
-        <i class="fa fa-list-ul"></i> Master Data <i class="fa fa-caret-down"></i>
-      </a>
-    </div>
-    <div id="collapseOne" class="collapse" data-parent="#accordion">
-      <div class="card-body">
-        <a class="dropdown-item" href="{{ route('roles.index') }}">Role</a>
-                <a class="dropdown-item" href="{{ route('status.index') }}">Master Status</a>
-                <a class="dropdown-item" href="{{ route('shared.index') }}">Master Shared</a>
-                <a class="dropdown-item" href="{{ route('category.index') }}">Master Category</a>
-      </div>
-    </div>
-  </div>
-
-  <div class="card">
-    <div class="card-header"  style="background-color:#ffcd22">
-      <a class="card-link btn-block" href="{{ route('user') }}">
-        <i class="fa fa-users"></i> User
-      </a>
-    </div>
-    {{-- <div id="collapseTwo" class="collapse" data-parent="#accordion">
-      <div class="card-body">
-        Lorem ipsum..
-      </div>
-    </div> --}}
-  </div>
-
-  {{-- <div class="card">
-    <div class="card-header"  style="background-color:#ffcd22">
-      <a class="card-link btn-block" href="{{ route('user') }}">
-        <i class="fa fa-user-secret"></i> Admin 
-      </a>
-    </div>
-    <div id="collapseTwo" class="collapse" data-parent="#accordion">
-      <div class="card-body">
-        Lorem ipsum..
-      </div>
-    </div>
-  </div> --}}
-
-  {{-- <div class="card">
-    <div class="card-header"  style="background-color:#ffcd22">
-      <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree">
-        Collapsible Group Item #3
-      </a>
-    </div>
-    <div id="collapseThree" class="collapse" data-parent="#accordion">
-      <div class="card-body">
-        Lorem ipsum..
-      </div>
-    </div>
-  </div> --}}
-
+<div id="sidebar-wrapper">
+  <ul id="sidebar_menu" class="sidebar-nav">
+    <li class="sidebar-brand"><a id="menu-toggle" href="#">Menu</li>
+  </ul>
+  <ul class="sidebar-nav" id="sidebar">
+    <li><a href="{{route('role.index')}}">Roles</a></li>
+    <li><a href="{{route('category.index')}}">Category</a></li>
+    <li><a href="{{route('shared.index')}}">Shared</a></li>
+    <li><a href="{{route('status.index')}}">Status</a></li>
+  </ul>
 </div>
 

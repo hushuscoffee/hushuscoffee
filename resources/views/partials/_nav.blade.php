@@ -1,79 +1,60 @@
-<header class="header-area">
-<nav class="navbar navbar-expand-md bg-primary navbar-dark">
-  <div class="container">
-    <a class="navbar-brand" href="{{route('index')}}">
-      {{-- <i class="fa d-inline fa-lg fa-coffee"></i>
-      <b> Coffee Story</b> --}} 
-    <img src="{{asset('images/logo/hushus_coffee.png')}}" width="180px"/>
-    </a>
-<form action="{{url('/search')}}">
-<div class="row">
-  <div class="col-md"> 
-    <label class="sr-only" for="search">Search</label>
-    <div class="input-group">
-        <input type="text" name="search" placeholder="Search" id="search" class="form-control"/>
-        <div class="input-group-append">
-          <div class="input-group-text">
-            <i class="fa fa-search"></i>
-          </div>
-      </div>
-    </div>
-  </div>
-</div>
-</form>
-    <button class="navbar-toggler navbar-toggler-right" type="button" data-toggle="collapse" data-target="#navbar2SupportedContent">
-      <span class="navbar-toggler-icon"></span>
-    </button>
-    <div class="collapse navbar-collapse text-center justify-content-end" id="navbar2SupportedContent">
-      <ul class="navbar-nav">
-        <li class="nav-item">
-          <a class="nav-link" href="{{route('brewing')}}">
-            {{-- <i class="fa d-inline fa-lg fa-book"></i> Brewing Method</a> --}}
-            Brewing Method</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{route('recipe')}}">
-            {{-- <i class="fa d-inline fa-lg fa-book"></i> Recipe</a> --}}
-            Recipe</a>
-        </li>
-        <li>
-          <div class="btn-group">
-          <button class="btn btn-primary dropdown-toggle underline" data-toggle="dropdown">Article </button>
-          <div class="dropdown-menu">
-            <a class="nav-link" href="{{route('news')}}">News</a>
-            <a class="nav-link" href="{{route('tips')}}">Tips</a>
-            <a class="nav-link" href="{{route('event')}}">Events</a>
-          </div>
+<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
+  <a class="navbar-brand" href="#">HushusCoffee</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+    aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <form class="form-inline my-2 my-lg-0 mr-auto">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+    </form>
+    <ul class="navbar-nav">
+      <li class="nav-item dropdown {{ Request::is('article/*') ? "active" : "" }}">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          Article
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{{route('events')}}">Events</a>
+          <a class="dropdown-item" href="{{route('news')}}">News</a>
+          <a class="dropdown-item" href="{{route('tips')}}">Tips</a>
         </div>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{{route('people')}}">
-            People</a>
-        </li>
-      </ul>
-      <br>
+      </li>
+      <li class="nav-item {{ Request::is('brewing') ? "active" : "" }}">
+        <a class="nav-link" href="#">Brewing Method</a>
+      </li>
+      <li class="nav-item {{ Request::is('recipe') ? "active" : "" }}">
+        <a class="nav-link" href="#">Recipe</a>
+      </li>
+      <li class="nav-item {{ Request::is('people') ? "active" : "" }}">
+        <a class="nav-link" href="#">People</a>
+      </li>
       @if(Auth::check())
-        <div class="btn-group">
-          <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"><i class="fa d-inline fa-lg fa-user-circle-o"></i> Hi, {{ Auth::user()->username }} </button>
-          <div class="dropdown-menu">
-            @if(Auth::user()->id_role==1)
-              <a class="nav-link" href="{{route('admin')}}"><i class="fa fa-user-secret"></i> Admin</a>
-            @endif
-            <a class="nav-link" href="{{route('personalize')}}"><i class="fa fa-dashboard"></i> Personalize</a>
-            <a class="nav-link" href="{{route('profile.basic')}}"><i class="fa fa-gear"></i> Profile</a>
-            <a class="nav-link" href="{{route('favorite.index')}}"><i class="fa fa-heart"></i> Favorites</a>
-            <a class="nav-link" href="{{route('logout')}}"><i class="fa fa-power-off"></i> Log Out</a>
-          </div>
+      <li class="nav-item dropdown {{ Request::is('note','note/*') ? "active" : "" }}">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
+          aria-expanded="false">
+          @if(Auth::user()->role_id==1)
+            <i class="fa d-inline fa-md fa-user"></i> Admin
+          @else
+            <i class="fa d-inline fa-md fa-user"></i> User
+          @endif
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <a class="dropdown-item" href="{{route('note')}}">My Note</a>
+          <a class="dropdown-item" href="{{route('profile')}}"><i class="fa fa-gear"></i> Profile</a>
+          <a class="dropdown-item" href="{{route('getLogout')}}"><i class="fa fa-power-off"></i>Log Out</a>
+        </div>
+      </li>
       @else
-      {{-- <a class="btn ml-2 text-white btn-primary" href="{{route('register')}}">
-        <i class="fa d-inline fa-lg fa-user-plus"></i> Register</a>
-      <a class="btn ml-2 text-white btn-primary" href="{{route('login')}}">
-        <i class="fa d-inline fa-lg fa-user-circle-o"></i> Sign in</a> --}}
-        <button type="button" onclick="window.location='{{ route('register') }}'" class="btn btn-primary text-white"><i class="fa d-inline fa-lg fa-user-plus"></i> Register </button>
-        <button type="button" onclick="window.location='{{ route('login') }}'" class="btn btn-primary text-white"><i class="fa d-inline fa-lg fa-user-circle-o"></i> Login </button> 
+      <li class="nav-item">
+        <a class="nav-link" href="{{route('getRegister')}}"><i class="fa d-inline fa-md fa-user-plus"></i> Register</a>
+      </li>
+      <li class="nav-item">
+        <a class="nav-link" href="{{route('getLogin')}}"><i class="fa d-inline fa-lg fa-user-circle"></i> Login</a>
+      </li>
       @endif
-    </div>
+    </ul>
   </div>
 </nav>
-</header>
-@include('partials._messages')

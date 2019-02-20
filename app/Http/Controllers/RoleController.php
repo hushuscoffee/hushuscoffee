@@ -2,66 +2,115 @@
 
 namespace App\Http\Controllers;
 
-use App\Role;
 use Illuminate\Http\Request;
+
+use App\Http\Requests;
+use App\Role;
 use Session;
 
 class RoleController extends Controller
 {
+    /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function index()
     {
         $roles = Role::all();
-        return view('role.index')->withRoles($roles);
+        return view('admin.roles.index')->withRoles($roles);
     }
 
+    /**
+     * Show the form for creating a new resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
     public function create()
     {
-        return view('role.create');
+        return view('admin.roles.create');
     }
 
+    /**
+     * Store a newly created resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return \Illuminate\Http\Response
+     */
+    public function store(Request $request)
+    {
+        //
+        $this->validate($request, array(
+            'name' => 'required|max:255'
+            ));
+
+        $role = new Role;
+
+        $role->name = $request->name;
+        $role->save();
+
+        Session::flash('success', 'New Role has been created');
+        return redirect()->route('role.index');
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function edit($id)
     {
-        $roles = Role::find($id);  
-        return view('role.edit')->withRoles($roles, $id);
+        $role = Role::find($id);  
+        return view('admin.roles.edit')->withRole($role);
     }
 
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function update(Request $request, $id)
     {
         $this->validate($request, [
             'name' => 'required'
         ]);
 
-        $roles = Role::findOrFail($id);
+        $role = Role::findOrFail($id);
         
-        $roles->name = $request->input('name');
+        $role->name = $request->input('name');
                 
-        $roles->save();
+        $role->save();
 
-        return redirect()->route('roles.index')->with(['success' => 'Data Updated!']);
+        Session::flash('success', 'Role has been updated');
+        return redirect()->route('role.index');
     }
 
-    public function store(Request $request)
-    {
-        $this->validate($request, [
-            'name' => 'required'
-        ]);
-
-        $roles = new Role([
-            'name' => $request->input('name')
-        ]);
-
-        $roles->save();
-
-        return redirect(route('roles.index'));
-    }
-
+    /**
+     * Remove the specified resource from storage.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
     public function destroy($id)
     {
-        $roles = Role::findOrFail($id);
-        $roles->delete();
+        $role = Role::findOrFail($id);
+        $role->delete();
+        Session::flash('success', 'Role has been deleted');
+        return redirect()->route('role.index');
 
-        // Session::flash('success', 'Deleted!');
-
-        return redirect()->route('roles.index')->with(['success' => 'Deleted!']);
     }
 }

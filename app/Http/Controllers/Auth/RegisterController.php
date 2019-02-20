@@ -44,64 +44,51 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    public function index()
+    public function getRegister()
     {
         return view('auth.register');
     }
 
-    public function store(Request $request){
+    public function postRegister(Request $request){
+        // Username validation
         $validator1 = Validator::make($request->all(), [
-            'username' => 'required|string|max:255|unique:user_auths',           
+            'username' => 'required|string|max:255|unique:users',           
         ]);
+        // Email Validation
         $validator2 = Validator::make($request->all(), [
-            'email' => 'required|string|email|max:255|unique:user_auths',
+            'email' => 'required|string|email|max:255|unique:users',
         ]);
-        $input = $request->all();
+        // Validation Process
         if ($validator1->fails()) {
             Session::flash('username', 'Username has been registered. Please choose another username');
             return redirect()->back();
         }elseif($validator2->fails()){
             Session::flash('email', 'Email has been registered. Please choose another email');
             return redirect()->back();
-        }elseif($input['password']!=$input['password_confirmation']){
+        }elseif($request->password!=$request->password_confirmation){
             Session::flash('password', 'Password and confirm password did not match. Please enter your password carefully');
             return redirect()->back();
         }
         else{
-            $id_user = User::create(['username' => $input['username'],'email' => $input['email'],'password' => bcrypt($input['password']),'active' => 10,'id_role' => 2])->id;
-            Profile::create(['id_user'=> $id_user, 'username' => $input['username'],'fullname' => $input['username'], 'profession' => '','gender'=>'Male']);
+            // Create User
+            $user = new User;
+            $user->username = $request->username;
+            $user->email = $request->email;
+            $user->password = bcrypt($request->password);
+            $user->role_id = 1;
+            $user->save();
+            // End of Create User
+
+            // Create Profile
+            $profile = new Profile;
+            $profile->user_id = $user->id;
+            $profile->photo = 'images/avatar/unknown.png';
+            $profile->save();
+            // End of Create Profile
+            
             Session::flash('success', 'Account has been registered. You can now sign in with your registered account here');
-            return redirect(route('login'));
-        }                 
-    }
-
-    /**
-     * Get a validator for an incoming registration request.
-     *
-     * @param  array  $data
-     * @return \Illuminate\Contracts\Validation\Validator
-     */
-    protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'username' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
-    }
-
-    /**
-     * Create a new user instance after a valid registration.
-     *
-     * @param  array  $data
-     * @return \App\User
-     */
-    protected function create(array $data)
-    {
-        return User::create([
-            'username' => $data['username'],
-            'email' => $data['email'],
-            'password' => bcrypt($data['password']),
-        ]);
+            return redirect(route('getLogin'));
+        }              
+        // End of Validation Process   
     }
 }

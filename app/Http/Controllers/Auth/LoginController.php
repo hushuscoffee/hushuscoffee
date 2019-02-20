@@ -42,16 +42,14 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    public function index()
+    public function getLndex()
     {
         return view('auth.login');
     }
 
-    public function Login(Request $request){
+    public function postLogin(Request $request){
              if (Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-                if(Auth::user()->id_role == 1){
-                    return redirect('/');
-                } elseif(Auth::user()->id_role == 2){
+                if(Auth::check()){
                     return redirect('/');
                 }
             } else {

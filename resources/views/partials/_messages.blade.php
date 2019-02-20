@@ -1,16 +1,26 @@
-<div style="margin-top:10px"></div>
 @if (Session::has('success'))
-<div class="container">
-    <div class="alert alert-warning" role="alert">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        {{ Session::get('success')}}
-    </div>
-</div>
-@elseif (Session::has('error'))
-<div class="container">
-    <div class="alert alert-danger" role="alert">
-        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-        {{ Session::get('error')}}
-    </div>
+	
+	<div class="alert alert-success alert-dismissible" role="alert">
+		<strong>Success:</strong> {{ Session::get('success') }}
+		<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="padding-right:30px;"><span aria-hidden="true">&times;</span></button>
+	</div>
+
+@endif
+
+@if (count($errors) > 0)
+
+	<div class="alert alert-danger" role="alert">
+		<strong>Errors:</strong>
+		<ul>
+		@foreach ($errors->all() as $error)
+			<li>{{ $error }}</li>
+		@endforeach  
+		</ul>
+	</div>
+@endif
+
+@if (session('info'))
+<div class="alert alert-info alert-dismissible" role="alert">
+	<button type="button" class="close" data-dismiss="alert" aria-label="Close" style="padding-right:30px;"><span aria-hidden="true">&times;</span></button>	{{ session('info') }}
 </div>
 @endif
