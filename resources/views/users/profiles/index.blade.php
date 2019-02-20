@@ -41,13 +41,13 @@
             <div class="form-group">
                 <label>Phone</label>
                 <input type="tel" class="form-control" name="phone" value="{{$basic['phone']}}">
-            </div>
+            </div>            
+        </div>
+        <div class="col-md-6">
             <div class="form-group">
                 <label>City</label>
                 <input type="text" class="form-control" name="city" value="{{$basic['city']}}" required>
             </div>
-        </div>
-        <div class="col-md-6">
             <div class="form-group">
                 <label>Profession</label>
                 <input type="text" class="form-control" name="profession" value="{{$basic['profession']}}" required>

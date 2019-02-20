@@ -8,6 +8,7 @@ use App\Achievement;
 use App\Language;
 use App\Experience;
 use App\Skill;
+use App\User;
 use App\Http\Requests;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Input;
@@ -175,5 +176,23 @@ class ProfileController extends Controller
         $language = Language::findOrFail($id);
         $language->delete();
         return redirect()->back()->with('info','Success! Language has been deleted');
+    }
+
+    public function passwordIndex(){
+        return view('users.passwords.index');
+    }
+
+    public function passwordChange(Request $request){
+        $input = $request->all();
+        $data = User::where('id','like',Auth::user()->id)->first();
+        if(!(Hash::check(($input['old']), $data->password))){
+            return redirect()->back()->with('error','Old password is wrong. Please enter correct password');
+        }elseif($input['password']!=$input['matchpwd']){
+            return redirect()->back()->with('error',"Password did not match. Please enter match password");
+        }
+        else{
+            User::where('id','=',Auth::user()->id)->update(['password' => bcrypt($input['password'])]);
+        }        
+        return redirect()->back()->with('info','Success! Password has been changed');
     }
 }
