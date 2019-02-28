@@ -4,18 +4,16 @@ namespace App;
 
 use App\Status;
 use App\Shared;
-use App\Category;
 use App\User;
 use Illuminate\Database\Eloquent\Model;
 use Cviebrock\EloquentSluggable\Sluggable;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
-class Article extends Model
+class Brewing extends Model
 {
     use Sluggable;
     use SoftDeletes;
-    protected $table = 'articles';
+    protected $table = 'brewings';
 
     /**
      * The attributes that should be mutated to dates.
@@ -36,11 +34,6 @@ class Article extends Model
                 'source' => 'title'
             ]
         ];
-    }
-
-    public function category()
-    {
-    	return $this->belongsTo('App\Category');
     }
 
     public function shared()

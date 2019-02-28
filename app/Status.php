@@ -21,4 +21,9 @@ class Status extends Model
     {
         return $this->hasMany('App\Article');
     }
+
+    public function brewings()
+    {
+        return $this->hasMany('App\Brewing');
+    }
 }

@@ -23,6 +23,16 @@ class User extends Authenticatable
      */
     protected $dates = ['deleted_at'];
 
+    public function articles()
+    {
+        return $this->hasMany('App\Article');
+    }
+
+    public function brewings()
+    {
+        return $this->hasMany('App\Brewing');
+    }
+
     public function profile()
     {
     	return $this->hasOne('App\Profile');

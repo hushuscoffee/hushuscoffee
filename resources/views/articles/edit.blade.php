@@ -1,43 +1,93 @@
 @extends('main') 
-@section('title', '| Edit My Article') 
+@section('title', '| Edit My Article')
+@section('stylesheets')
+<style>
+  img {
+    width: 100%;
+    height: auto;
+  }
+</style>
+@endsection 
 @section('content')
 <div class="row">
-  <div class="col-md-8">
+  <div class="col-md-12">
     <h1 class="text-center">Edit Your Own Article</h1>
+  </div>
+</div>
+<br><br>
+
+<div class="row">
+  <div class="col-md-9">
     {!! Form::model($article,['route'=>['article.update', $article->id], 'method'=>'PUT', 'enctype'=>"multipart/form-data"])!!}
-    {{ Form::label('title', 'Title:')}} {{ Form::text('title', null, ["class"=> 'form-control input-lg'])}}<br>
-    <div class="form-group"><label for="category">Category: </label>
-      <select name="category" class="form-control">
-                  @foreach($categories as $cat)
-                <option value="{{$cat->id}}"
-                    @if($cat->id==$article->category_id)
-                    selected
-                    @endif
-                    >{{$cat->name}}</option>
-                  @endforeach
-                </select>
-    </div>
-    <div class="form-group">
-      <label for="file">Cover Image: </label>
-      <input type="file" class="form-control" id="DragAndDrop" onchange="imagePreview();" name="file">
-    </div>
-    <label for="file">Current Cover Image: </label><br>
-    <img id="image" src="{{asset($article->image)}}" width="600px"><br><br> {{ Form::label('description', 'Description:',
-    ['class'=> 'form-spacing-top'])}} {{ Form::textarea('description', null, ["class"=> 'form-control input-lg my-editor'])}}<br>
-    <div class="form-group">
-      <label for="share">Choose how you share it: </label>
-      <select name="shared" class="form-control">
-                  @foreach($shareds as $cat)
-                <option value="{{$cat->id}}"
-                    @if($cat->id==$article->shared_id)
-                    selected
-                    @endif
-                    >{{$cat->name}}</option>
-                  @endforeach
-                </select>
-    </div>
-    <a href="{{ route('myArticle.show', $article->slug) }}" class="btn btn-danger">Cancel</a>
-    <input type="submit" class="btn btn-primary" value="Save Changes">
+      {{ csrf_field() }}
+      <div class="row">
+        <div class="col-md-2">
+          <strong><label>Title</label></strong>
+        </div>
+        <div class="col-md-10">
+          <input type="text" class="form-control" id="title" name="title" required maxlength="255" value="{{$article->title}}">
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-2">
+          <strong><label>Category</label></strong>
+        </div>
+        <div class="col-md-10">
+          <select name="category" class="form-control">
+                        @foreach($categories as $cat)
+                        <option value="{{$cat->id}}" @if($cat->id==$article->category_id) selected @endif >{{$cat->name}}
+                        </option>
+                        @endforeach
+                    </select>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-2">
+          <strong><label>Cover Image</label></strong>
+        </div>
+        <div class="col-md-10">
+          <input type="file" class="form-control" id="DragAndDrop" onchange="imagePreview();" name="file">
+          <br>
+          <img id="image" src="{{asset($article->image)}}">
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-2">
+          <strong><label>Description</label></strong>
+        </div>
+        <div class="col-md-10">
+          {{ Form::textarea('description', null, ["class"=> 'form-control input-lg my-editor'])}}
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-2">
+          <strong><label>Choose how you share it</label></strong>
+        </div>
+        <div class="col-md-10">
+          <select name="shared" class="form-control input-group-text">
+                            @foreach($shareds as $cat)
+                            <option value="{{$cat->id}}" @if($cat->id==$article->shared_id) selected @endif >{{$cat->name}}
+                            </option>
+                            @endforeach
+                        </select>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+          <a href="{{ route('myArticle.show', $article->slug) }}" class="btn btn-danger">Cancel</a>
+          <input type="submit" class="btn btn-primary" value="Save Changes">
+        </div>
+      </div>
+    {!! Form::close()!!}
+  </div>
+  <div class="col-md-3">
+
   </div>
 </div>
 @endsection
@@ -47,5 +97,6 @@
   tinymce.init({ selector:'textarea', height : "800", max_width : "700" });
   function imagePreview() { var iRead = new FileReader(); iRead.readAsDataURL(document.getElementById("DragAndDrop").files[0]);
   iRead.onload = function(oFREvent) { document.getElementById("image").src = oFREvent.target.result; }; }
+
 </script>
 @endsection

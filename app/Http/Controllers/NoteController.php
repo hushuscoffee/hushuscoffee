@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 
 use App\Http\Requests;
 use App\Article;
+use App\Brewing;
 use Illuminate\Support\Facades\Auth;
 
 class NoteController extends Controller
@@ -44,5 +45,9 @@ class NoteController extends Controller
     public function showArticle($slug){
         $article =  Article::where('slug', '=', $slug)->first();
         return view('articles.show')->withArticle($article);
+    }
+    public function showBrewing($slug){
+        $brewing =  Brewing::where('slug', '=', $slug)->first();
+        return view('brewings.show')->withBrewing($brewing);
     }
 }

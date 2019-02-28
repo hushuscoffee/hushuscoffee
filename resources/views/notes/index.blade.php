@@ -8,7 +8,7 @@
                 <hr>
                 <img src="{{asset('images/technique.png')}}" width="150" />
                 <hr>
-                <a class="btn btn-primary" href="#"><i class="fa fa-plus"></i> Add Brewing</a><br><br>
+                <a class="btn btn-primary" href="{{route('brewing.create')}}"><i class="fa fa-plus"></i> Add Brewing</a><br><br>
                 <a class="btn btn-primary" href="#"><i class="fa fa-user"></i> My Brewing</a>
             </div>
         </div>

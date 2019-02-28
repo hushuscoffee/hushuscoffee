@@ -51,9 +51,14 @@ Route::group(['prefix' => 'note'], function () {
         
         Route::get('edit/{slug}', 'ArticleController@edit')->name('article.edit');
         Route::put('edit/{slug}', 'ArticleController@update')->name('article.update');
-        Route::get('destroy', 'ArticleController@edit')->name('article.destroy');
+        Route::delete('destroy/{id}', 'ArticleController@destroy')->name('article.destroy');
     });
     Route::group(['prefix' => 'brewing'], function () {
+        Route::get('create', 'BrewingController@create')->name('brewing.create');
+        Route::post('create', 'BrewingController@store')->name('brewing.store');
+        Route::get('edit/{slug}', 'BrewingController@edit')->name('brewing.edit');
+        Route::put('edit/{slug}', 'BrewingController@update')->name('brewing.update');
+        Route::delete('destroy/{id}', 'BrewingController@destroy')->name('brewing.destroy');
     });
     Route::group(['prefix' => 'recipe'], function () {
     });
@@ -82,6 +87,13 @@ Route::group(['prefix' => 'article'], function () {
     // End of Tips Routes
 });
 // End of Article Routes
+
+// Brewing Routes
+Route::group(['prefix' => 'brewing'], function () {
+    Route::get('/', 'BrewingController@index')->name('brewing');
+    Route::get('show/{slug}', 'NoteController@showBrewing')->name('myBrewing.show');
+});
+// End of Brewing Routes
 
 // Profile Routes
 Route::group(['prefix' => 'profile'], function () {

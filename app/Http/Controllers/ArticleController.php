@@ -14,6 +14,7 @@ use Image;
 use Session;
 use Purifier;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class ArticleController extends Controller
 {
@@ -51,10 +52,12 @@ class ArticleController extends Controller
             'title' => 'required|max:255',
             'description' => 'required'
         ]);
+        
         $filename = 'unknowncover.jpg';
         if ($request->hasFile('file')) {
+            $hashed = md5(uniqid(Auth::user()->id, true));
             $image = Input::file('file');
-			$filename  = time() . '.' . $image->getClientOriginalExtension();
+			$filename  = $hashed.'_'.time() . '.' . $image->getClientOriginalExtension();
 			$path = public_path('uploads/articles/' . $filename);
 			Image::make($image->getRealPath())->save($path);
         }
@@ -65,7 +68,7 @@ class ArticleController extends Controller
         $article->user_id = Auth::user()->id;
         $article->title = $request->title;
         $article->description = Purifier::clean($request->description);
-        $article->image = 'uploads/articles/'.$filename;
+        $article->image = $filename;
         
         $article->save();
         Session::flash('success', 'This article was successfully saved');
@@ -112,14 +115,21 @@ class ArticleController extends Controller
         ]);
         $article = Article::findOrFail($id);
         $article->title = $request->input('title');
-        $article->description = $request->input('description');
+        $article->description = Purifier::clean($request->description);
+        $article->shared_id = $request->shared;
+        $article->category_id = $request->category;
 
-        if ($request->hasFile('image')) {
-            $image = Input::file('image');
-            $filename = time() . '.' . $image->getClientOriginalExtension();
-            $path = public_path('uploads/articles/' . $filename);
+        if ($request->hasFile('file')) {
+            $hashed = md5(uniqid(Auth::user()->id, true));
+            $image = Input::file('file');
+			$filename  = $hashed.'_'.time() . '.' . $image->getClientOriginalExtension();
+			$path = public_path('uploads/articles/' . $filename);
             Image::make($image->getRealPath())->save($path);
-            $article->image='uploads/articles/'.$filename;
+            if($article!='unknowncover.jpg'){
+                $file_to_delete = public_path('uploads/articles/' . $article->image);
+                File::delete($file_to_delete);
+            }
+            $article->image = $filename;
         }
         $article->save();
 
@@ -136,7 +146,9 @@ class ArticleController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $article = Article::find($id);
+        $article->delete();
+        return redirect(route('article.all'))->with('info','Success! Article has been deleted');
     }
 
     public function indexEvents(){
