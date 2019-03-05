@@ -107,12 +107,19 @@ Route::group(['prefix' => 'brewing'], function () {
 });
 // End of Brewing Routes
 
-// Brewing Routes
+// People Routes
+Route::group(['prefix' => 'people'], function () {
+    Route::get('/', 'PeopleController@index')->name('people');
+    Route::get('show/{id}', 'PeopleController@show')->name('people.show');
+});
+// End of People Routes
+
+// Recipe Routes
 Route::group(['prefix' => 'recipe'], function () {
     Route::get('/', 'RecipeController@index')->name('recipe');
     Route::get('show/{slug}', 'NoteController@showRecipe')->name('myRecipe.show');
 });
-// End of Brewing Routes
+// End of Recipe Routes
 
 // Profile Routes
 Route::group(['prefix' => 'profile'], function () {
