@@ -4,11 +4,11 @@
 <meta name="_token" content="{{csrf_token()}}" />
 <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
 <title>HushusCoffee @yield('title')</title> <!-- CHANGE THIS TITLE FOR EACH PAGE -->
-
+<link rel="icon" href="{{ asset('images/logo/logo.png')}}">
 <!-- Bootstrap -->
-<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS"
-  crossorigin="anonymous">
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.6.3/css/all.css" integrity="sha384-UHRtZLI+pbxtHCWp1t77Bi1L4ZtiqrqD80Kn4Z8NTSRyMA2Fd33n5dQ8lWUE00s/"
-  crossorigin="anonymous">
-{{-- {{ Html::style('css/styles.css') }} --}}
+<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.7.2/css/all.css" integrity="sha384-fnmOCqbTlWIlj8LyTjo7mOUStjsKC4pOpQbqyi7RrhN7udi9RwhKkMHpvLbHG9Sr"
+    crossorigin="anonymous">
+{{ Html::style('css/bootstrap.min.css') }}
+{{ Html::style('css/styles.css') }}
+{{ Html::style('css/custom_font.css') }}
 @yield('stylesheets')

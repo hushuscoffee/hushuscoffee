@@ -82,7 +82,8 @@ class RegisterController extends Controller
             // Create Profile
             $profile = new Profile;
             $profile->user_id = $user->id;
-            $profile->photo = 'images/avatar/unknown.png';
+            $profile->photo = 'unknown.png';
+            $profile->fullname = $request->username;
             $profile->save();
             // End of Create Profile
             

@@ -54,7 +54,7 @@ class LoginController extends Controller
                 }
             } else {
                 $validator = Validator::make($request->all(), [
-                    'username' => 'required|string|max:255|unique:user_auths',                    
+                    'username' => 'required|string|max:255|unique:users',                    
                 ]);
                 if (!$validator->fails()) {
                     Session::flash('username', 'Username has not been registered yet.');

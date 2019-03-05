@@ -36,6 +36,11 @@ class Brewing extends Model
         ];
     }
 
+    public function favourites()
+    {
+    	return $this->hasMany('App\Favourite');
+    }
+
     public function shared()
     {
     	return $this->belongsTo('App\Shared');

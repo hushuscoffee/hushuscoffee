@@ -156,6 +156,7 @@
     <li class="sidebar-brand"><a id="menu-toggle" href="#">Menu</li>
   </ul>
   <ul class="sidebar-nav" id="sidebar">
+    <li><a href="{{route('dashboard')}}">Dashboard</a></li>
     <li><a href="{{route('role.index')}}">Roles</a></li>
     <li><a href="{{route('category.index')}}">Category</a></li>
     <li><a href="{{route('shared.index')}}">Shared</a></li>

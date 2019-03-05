@@ -1,5 +1,17 @@
 @extends('main') 
 @section('title') | Brewing {{$brewing->title}}
+@section('stylesheets')
+<style>
+    .image{
+        width: 100%;
+        height:auto;
+    }
+    .image-cover{
+        width: 100%; 
+        max-height:400px;
+    }
+</style>
+@endsection
 @endsection
  
 @section('content')
@@ -8,6 +20,8 @@
 </center>
 <div class="row">
     <div class="col-md-8">
+        <img class="image-cover" src="{{asset('uploads/brewings/'.$brewing->image)}}"/>
+        <br><br>
         <h4>DESCRIPTION</h4>
         <p>{!!$brewing->description!!}</p>
         <hr>
@@ -15,9 +29,10 @@
         <?php $steps = json_decode($brewing->steps) ?>
         <?php $step_images = json_decode($brewing->step_images) ?>
         <?php $number=1 ?> @foreach($steps as $key => $step)
-        <label style="font-weight: bolder; font-size: 22px;">Step {{$number}} </label> {!!$step!!} @if($step_images[$key]!='none')
+        <p style="font-weight: bolder; font-size: 22px;">Step {{$number}} </p> 
+        <p>{!!$step!!}</p> @if($step_images[$key]!='none')
         <img src="{{asset('uploads/brewings/steps/'.$step_images[$key])}}" width="400px" /> @endif
-        <hr>
+        <hr><br>
         <?php $number++ ?> @endforeach
     </div>
     <div class="col-md-4">
@@ -41,7 +56,7 @@
         <p>{{$to->name}}: {{$to->amount}} {{$to->unit}}</p>
         @endforeach @if (Auth::check())
         @if (Auth::user()->id==$brewing->user_id)
-            <hr><hr><hr>
+            <hr><hr>
             <dl class="well">
                 <dl class="dl-horizontal">
                     <label>Created At:</label>
@@ -61,8 +76,22 @@
                         }} {{ Form::close() }}
                     </div>
                 </div>
+                <hr>
                 @endif
         @endif
+        <h5>Related Brewings</h5>
+        <hr> @foreach ($brewings as $brewing)
+        <div class="row">
+            <div class="col-md-4">
+                <a href="{{route('myBrewing.show', $brewing->slug)}}"><img class="image" src="{{asset('uploads/brewings/'.$brewing->image)}}"></a>
+            </div>
+            <div class="col-md-8">
+                <a style="font-size:14px;" href="{{route('myBrewing.show', $brewing->slug)}}" data-toggle="tooltip" data-placement="left"
+                    title="{{$brewing->title}}">{{$brewing->title}}</a>
+                <p style="font-size:12px;">By : <a href="#" style="font-size:12px;">{{$brewing->user->profile->fullname}}</a> on {{$brewing->created_at}}</p>
+            </div>
+        </div>
+        <hr> @endforeach
     </div>
 </div>
 @endsection

@@ -1,0 +1,48 @@
+ @font-face {
+     font-family: Lato-Light;
+     src: url('../fonts/Lato-Light.ttf');
+ }
+ 
+ @font-face {
+     font-family: Lato-Bold;
+     src: url('../fonts/Lato-Bold.ttf');
+ }
+ 
+ @font-face {
+     font-family: Lato-Regular;
+     src: url('../fonts/Lato-Regular.ttf');
+ }
+ 
+ @font-face {
+     font-family: Avenir-Regular;
+     src: url('../fonts/avenirnext/AvenirNextLTPro-Regular.otf');
+ }
+ 
+ @font-face {
+     font-family: Avenir-Bold;
+     src: url('../fonts/avenirnext/AvenirNextLTPro-Bold.otf');
+ }
+ 
+ @font-face {
+     font-family: Avenir-Medium;
+     src: url('../fonts/avenirnext/AvenirNextLTPro-Medium.otf');
+ }
+ 
+ h1,h2 {
+     font-weight: bolder;
+     font-family: Avenir-Bold;
+ }
+ 
+ h4,h3,
+ label,
+ input[type="submit"] {
+     font-weight: bolder;
+     font-family: Avenir-Medium;
+ }
+ 
+ p,a {
+     font-size: 16px;
+     font-family: Avenir-Regular;
+     text-decoration: none !important;
+     color: black;
+ }

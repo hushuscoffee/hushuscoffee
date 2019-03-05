@@ -33,9 +33,19 @@ class User extends Authenticatable
         return $this->hasMany('App\Brewing');
     }
 
+    public function favourites()
+    {
+    	return $this->hasMany('App\Favourite');
+    }
+
     public function profile()
     {
     	return $this->hasOne('App\Profile');
+    }
+
+    public function recipes()
+    {
+        return $this->hasMany('App\Recipe');
     }
 
     public function role()

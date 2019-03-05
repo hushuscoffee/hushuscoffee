@@ -5,9 +5,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 
 use App\Http\Requests;
-use App\Category;
 use App\Shared;
 use App\Brewing;
+use App\Favourite;
 use Illuminate\Support\Facades\Input;
 use File;
 use Image;
@@ -25,7 +25,16 @@ class BrewingController extends Controller
      */
     public function index()
     {
-        //
+        $key = Input::get('search');
+        if (isset($key)) {
+            $brewings = Brewing::where('shared_id','=',1)->where('title', 'like', '%' . $key . '%')->orderBy('id', 'desc')->paginate(6);
+        } else {
+            $brewings = Brewing::where('shared_id','=',1)->orderBy('id', 'desc')->paginate(6);
+        }
+        if(Auth::check()){
+            $favourites = Favourite::where('user_id', '=', Auth::user()->id)->get();
+        }
+        return view('brewings.index')->withBrewings($brewings)->withFavourites($favourites);
     }
 
     /**
@@ -64,7 +73,7 @@ class BrewingController extends Controller
 
         $brewing = new Brewing;
         $brewing->title = $request->title;
-        $brewing->description = Purifier::clean($request->description);
+        $brewing->description = $request->description;
         $brewing->image = $filename;
         $brewing->status_id = $request->status;
         $brewing->shared_id = $request->shared;
@@ -175,19 +184,20 @@ class BrewingController extends Controller
 
         $brewing = Brewing::findOrFail($id);
         $brewing->title = $request->title;
-        $brewing->description = Purifier::clean($request->description);
+        $brewing->description = $request->description;
         if ($request->hasFile('cover')) {
             $image = Input::file('cover');
 			$filename  = $hashed.'_'.time() . '.' . $image->getClientOriginalExtension();
 			$path = public_path('uploads/brewings/' . $filename);
             Image::make($image->getRealPath())->save($path);
-            if($article!='unknowncover.jpg'){
+            if($brewing->image!='unknowncover.jpg'){
                 $file_to_delete = public_path('uploads/brewings/' . $brewing->image);
                 File::delete($file_to_delete);
             }
             $brewing->image = $filename;
         }
         $brewing->shared_id = $request->shared;
+        $brewing->slug = null;
 
         $time = array(
             'time1' => $request->time1,

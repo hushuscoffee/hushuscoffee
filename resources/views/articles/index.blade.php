@@ -24,4 +24,9 @@
     </div>
     @include('partials._article')
 </div>
+<div class="row justify-content-md-center">
+    <div class="col-md-auto">
+        <div class="text-center">{{$articles->links()}}</div>
+    </div>
+</div>
 @endsection

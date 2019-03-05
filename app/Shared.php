@@ -26,4 +26,9 @@ class Shared extends Model
     {
         return $this->hasMany('App\Brewing');
     }
+
+    public function recipes()
+    {
+        return $this->hasMany('App\Recipe');
+    }
 }

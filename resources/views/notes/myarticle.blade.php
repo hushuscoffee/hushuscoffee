@@ -6,7 +6,7 @@
 </center>
 @if(count($articles)==0)
 <div class="alert alert-danger">
-    <strong>Info!</strong> You haven&apos;t create any article! To create an article click <a href="{{route('articles.create')}}">here</a>
+    <strong>Info!</strong> You haven&apos;t create any article! To create an article click <a href="{{route('article.create')}}">here</a>
 </div>
 @else
 <div class="btn-group btn-group-toggle">
@@ -24,5 +24,4 @@
     </div>
 </div>
 @endif
-</div>
 @endsection

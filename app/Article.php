@@ -43,6 +43,11 @@ class Article extends Model
     	return $this->belongsTo('App\Category');
     }
 
+    public function favourites()
+    {
+    	return $this->hasMany('App\Favourite');
+    }
+
     public function shared()
     {
     	return $this->belongsTo('App\Shared');

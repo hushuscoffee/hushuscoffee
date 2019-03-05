@@ -8,6 +8,7 @@ use App\Http\Requests;
 use App\Category;
 use App\Shared;
 use App\Article;
+use App\Favourite;
 use Illuminate\Support\Facades\Input;
 use File;
 use Image;
@@ -37,7 +38,8 @@ class ArticleController extends Controller
     {
         $categories = Category::all();
         $shareds = Shared::all();
-        return view('articles.create')->withCategories($categories)->withShareds($shareds);
+        $articles = Article::where('user_id','=',Auth::user()->id)->orderBy('id', 'desc')->limit(5)->get();
+        return view('articles.create')->withCategories($categories)->withShareds($shareds)->withArticles($articles);
     }
 
     /**
@@ -67,12 +69,12 @@ class ArticleController extends Controller
         $article->category_id = $request->category;
         $article->user_id = Auth::user()->id;
         $article->title = $request->title;
-        $article->description = Purifier::clean($request->description);
+        $article->description = $request->description;
         $article->image = $filename;
         
         $article->save();
         Session::flash('success', 'This article was successfully saved');
-        
+        return redirect(route('myArticle.show',$article->slug));
     }
 
     /**
@@ -115,7 +117,7 @@ class ArticleController extends Controller
         ]);
         $article = Article::findOrFail($id);
         $article->title = $request->input('title');
-        $article->description = Purifier::clean($request->description);
+        $article->description = $request->description;
         $article->shared_id = $request->shared;
         $article->category_id = $request->category;
 
@@ -131,6 +133,7 @@ class ArticleController extends Controller
             }
             $article->image = $filename;
         }
+        $article->slug = null;
         $article->save();
 
         Session::flash('success','This article was successfully updated');
@@ -154,30 +157,39 @@ class ArticleController extends Controller
     public function indexEvents(){
         $key = Input::get('search');
         if (isset($key)) {
-            $articles = Article::where('category_id','=',1)->where('title', 'like', '%' . $key . '%')->orderBy('id', 'desc')->paginate(6);
+            $articles = Article::where('category_id','=',1)->where('shared_id','=',1)->where('title', 'like', '%' . $key . '%')->orderBy('id', 'desc')->paginate(6);
         } else {
-            $articles = Article::where('category_id','=',1)->orderBy('id', 'desc')->paginate(6);
+            $articles = Article::where('category_id','=',1)->where('shared_id','=',1)->orderBy('id', 'desc')->paginate(6);
         }
-        return view('articles.index')->withArticles($articles)->withCategory(1);
+        if(Auth::check()){
+            $favourites = Favourite::where('user_id', '=', Auth::user()->id)->get();
+        }
+        return view('articles.index')->withArticles($articles)->withCategory(1)->withFavourites($favourites);
     }
 
     public function indexNews(){
         $key = Input::get('search');
         if (isset($key)) {
-            $articles = Article::where('category_id','=',2)->where('title', 'like', '%' . $key . '%')->orderBy('id', 'desc')->paginate(6);
+            $articles = Article::where('category_id','=',2)->where('shared_id','=',1)->where('title', 'like', '%' . $key . '%')->orderBy('id', 'desc')->paginate(6);
         } else {
-            $articles = Article::where('category_id','=',2)->orderBy('id', 'desc')->paginate(6);
+            $articles = Article::where('category_id','=',2)->where('shared_id','=',1)->orderBy('id', 'desc')->paginate(6);
         }
-        return view('articles.index')->withArticles($articles)->withCategory(2);
+        if(Auth::check()){
+            $favourites = Favourite::where('user_id', '=', Auth::user()->id)->get();
+        }
+        return view('articles.index')->withArticles($articles)->withCategory(2)->withFavourites($favourites);
     }
 
     public function indexTips(){
         $key = Input::get('search');
         if (isset($key)) {
-            $articles = Article::where('category_id','=',3)->where('title', 'like', '%' . $key . '%')->orderBy('id', 'desc')->paginate(6);
+            $articles = Article::where('category_id','=',3)->where('shared_id','=',1)->where('title', 'like', '%' . $key . '%')->orderBy('id', 'desc')->paginate(6);
         } else {
-            $articles = Article::where('category_id','=',3)->orderBy('id', 'desc')->paginate(6);
+            $articles = Article::where('category_id','=',3)->where('shared_id','=',1)->orderBy('id', 'desc')->paginate(6);
         }
-        return view('articles.index')->withArticles($articles)->withCategory(3);
+        if(Auth::check()){
+            $favourites = Favourite::where('user_id', '=', Auth::user()->id)->get();
+        }
+        return view('articles.index')->withArticles($articles)->withCategory(3)->withFavourites($favourites);
     }
 }

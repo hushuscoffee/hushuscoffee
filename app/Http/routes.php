@@ -14,6 +14,7 @@
 Route::get('/', function(){
     return view('pages.welcome');
 });
+Route::get('dashboard', 'PageController@dashboard')->name('dashboard');
 Route::resource('role', 'RoleController');
 Route::resource('category', 'CategoryController');
 Route::resource('shared', 'SharedController');
@@ -43,15 +44,14 @@ Route::group(['prefix' => 'note'], function () {
     Route::get('/', 'NoteController@index')->name('note');
     Route::group(['prefix' => 'article'], function () {
         Route::get('create', 'ArticleController@create')->name('article.create');
-        Route::post('create', 'ArticleController@store')->name('article.store');
+        Route::post('create', 'ArticleController@store')->name('article.store');        
+        Route::get('edit/{slug}', 'ArticleController@edit')->name('article.edit');
+        Route::put('edit/{slug}', 'ArticleController@update')->name('article.update');
+        Route::delete('destroy/{id}', 'ArticleController@destroy')->name('article.destroy');
         Route::get('all', 'NoteController@articleAll')->name('article.all');
         Route::get('events', 'NoteController@articleEvents')->name('article.events');
         Route::get('news', 'NoteController@articleNews')->name('article.news');
         Route::get('tips', 'NoteController@articleTips')->name('article.tips');
-        
-        Route::get('edit/{slug}', 'ArticleController@edit')->name('article.edit');
-        Route::put('edit/{slug}', 'ArticleController@update')->name('article.update');
-        Route::delete('destroy/{id}', 'ArticleController@destroy')->name('article.destroy');
     });
     Route::group(['prefix' => 'brewing'], function () {
         Route::get('create', 'BrewingController@create')->name('brewing.create');
@@ -59,8 +59,20 @@ Route::group(['prefix' => 'note'], function () {
         Route::get('edit/{slug}', 'BrewingController@edit')->name('brewing.edit');
         Route::put('edit/{slug}', 'BrewingController@update')->name('brewing.update');
         Route::delete('destroy/{id}', 'BrewingController@destroy')->name('brewing.destroy');
+        Route::get('all', 'NoteController@brewingAll')->name('brewing.all');
     });
     Route::group(['prefix' => 'recipe'], function () {
+        Route::get('create', 'RecipeController@create')->name('recipe.create');
+        Route::post('create', 'RecipeController@store')->name('recipe.store');
+        Route::get('edit/{slug}', 'RecipeController@edit')->name('recipe.edit');
+        Route::put('edit/{slug}', 'RecipeController@update')->name('recipe.update');
+        Route::delete('destroy/{id}', 'RecipeController@destroy')->name('recipe.destroy');
+        Route::get('all', 'NoteController@recipeAll')->name('recipe.all');
+    });
+    Route::group(['prefix' => 'favourite'], function () {
+        Route::get('/', 'FavouriteController@index')->name('favourite');
+        Route::get('add/{id}{category}/', 'FavouriteController@add')->name('favourite.add');
+        Route::get('remove/{id}', 'FavouriteController@remove')->name('favourite.remove');
     });
 });
 // End of Notes Routes
@@ -92,6 +104,13 @@ Route::group(['prefix' => 'article'], function () {
 Route::group(['prefix' => 'brewing'], function () {
     Route::get('/', 'BrewingController@index')->name('brewing');
     Route::get('show/{slug}', 'NoteController@showBrewing')->name('myBrewing.show');
+});
+// End of Brewing Routes
+
+// Brewing Routes
+Route::group(['prefix' => 'recipe'], function () {
+    Route::get('/', 'RecipeController@index')->name('recipe');
+    Route::get('show/{slug}', 'NoteController@showRecipe')->name('myRecipe.show');
 });
 // End of Brewing Routes
 

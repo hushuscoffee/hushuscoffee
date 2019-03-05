@@ -20,7 +20,7 @@
         <div class="col-md-6">
             <div class="form-group">
                 <label>Photo</label><br>
-                <img id="image" src="{{asset('images/avatar/'.$basic->photo)}}" width="250px">
+                <img id="image" src="{{asset('images/avatar/'.$basic->photo)}}" height="200px">
                 <input type="file" class="form-control" name="photo" id="DragAndDrop" onchange="imagePreview();">
             </div>
             <div class="form-group">

@@ -9,7 +9,7 @@
                 <img src="{{asset('images/technique.png')}}" width="150" />
                 <hr>
                 <a class="btn btn-primary" href="{{route('brewing.create')}}"><i class="fa fa-plus"></i> Add Brewing</a><br><br>
-                <a class="btn btn-primary" href="#"><i class="fa fa-user"></i> My Brewing</a>
+                <a class="btn btn-primary" href="{{route('brewing.all')}}"><i class="fa fa-user"></i> My Brewing</a>
             </div>
         </div>
         <div class="col-md-4">
@@ -18,8 +18,8 @@
                 <hr>
                 <img src="{{asset('images/recipe.png')}}" width="150" />
                 <hr>
-                <a class="btn btn-primary" href="#"><i class="fa fa-plus"></i> Add Recipe</a><br><br>
-                <a class="btn btn-primary" href="#"><i class="fa fa-user"></i> My Recipe</a>
+                <a class="btn btn-primary" href="{{route('recipe.create')}}"><i class="fa fa-plus"></i> Add Recipe</a><br><br>
+                <a class="btn btn-primary" href="{{route('recipe.all')}}"><i class="fa fa-user"></i> My Recipe</a>
             </div>
         </div>
         <div class="col-md-4">

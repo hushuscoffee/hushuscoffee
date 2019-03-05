@@ -1,5 +1,9 @@
 <nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="#">HushusCoffee</a>
+  <a class="navbar-brand" href="">
+        {{-- <i class="fa d-inline fa-lg fa-coffee"></i>
+        <b> Coffee Story</b> --}} 
+      <img src="{{asset('images/logo/hushus_coffee.png')}}" width="180px"/>
+      </a>
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
     aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
@@ -22,11 +26,11 @@
           <a class="dropdown-item" href="{{route('tips')}}">Tips</a>
         </div>
       </li>
-      <li class="nav-item {{ Request::is('brewing') ? "active" : "" }}">
-        <a class="nav-link" href="#">Brewing Method</a>
+      <li class="nav-item {{ Request::is('brewing*') ? "active" : "" }}">
+        <a class="nav-link" href="{{route('brewing')}}">Brewing Method</a>
       </li>
-      <li class="nav-item {{ Request::is('recipe') ? "active" : "" }}">
-        <a class="nav-link" href="#">Recipe</a>
+      <li class="nav-item {{ Request::is('recipe*') ? "active" : "" }}">
+        <a class="nav-link" href="{{route('recipe')}}">Recipe</a>
       </li>
       <li class="nav-item {{ Request::is('people') ? "active" : "" }}">
         <a class="nav-link" href="#">People</a>
@@ -35,16 +39,21 @@
       <li class="nav-item dropdown {{ Request::is('note','note/*') ? "active" : "" }}">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true"
           aria-expanded="false">
-          @if(Auth::user()->role_id==1)
+          {{-- @if(Auth::user()->role_id==1)
             <i class="fa d-inline fa-md fa-user"></i> Admin
           @else
             <i class="fa d-inline fa-md fa-user"></i> User
-          @endif
+          @endif --}}
+          <img src="{{URL::to('images/avatar/'.Auth::user()->profile->photo)}}" class="avatar"/>  {{Auth::user()->username}}
         </a>
-        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" href="{{route('note')}}">My Note</a>
-          <a class="dropdown-item" href="{{route('profile')}}"><i class="fa fa-gear"></i> Profile</a>
-          <a class="dropdown-item" href="{{route('getLogout')}}"><i class="fa fa-power-off"></i>Log Out</a>
+        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown" >
+          @if(Auth::user()->role_id==1)
+          <a class="dropdown-item" href="{{route('dashboard')}}"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+          @endif
+          <a class="dropdown-item" href="{{route('note')}}"><i class="fas fa-sticky-note"></i> My Note</a>
+          <a class="dropdown-item" href="{{route('favourite')}}"><i class="fas fa-heart"></i> Favourite</a>
+          <a class="dropdown-item" href="{{route('profile')}}"><i class="fas fa-user-circle"></i> Profile</a>
+          <a class="dropdown-item" href="{{route('getLogout')}}"><i class="fas fa-power-off"></i> Log Out</a>
         </div>
       </li>
       @else
