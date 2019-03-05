@@ -2,16 +2,12 @@
 @extends('main') 
 @section('title', '| Favourites') 
 @section('content')
-<div class="row justify-content-md-center">
     <h1 class="text-center">Favourites</h1>
-    @if($favs->count()==0)
-    <div class="col-lg-12 mt-3 mb-3">
-        <div class="alert alert-danger">
-            <strong>Info!</strong> You have no list of favourites
-        </div>
-    </div>
+@if(count($favs)==0)
+<div class="alert alert-danger">
+    <strong>Info!</strong> You have no favourites list yet</a>
 </div>
-@else 
+@else
 <div class="row">@foreach($favs as $fav) @if($fav->article_id!=null)
     <?php $favourite = Article::where('id', '=', $fav->article_id)->where('shared_id', '=', 1)->first(); ?> @elseif($fav->brewing_id!=null)
     <?php $favourite = Brewing::where('id', '=', $fav->brewing_id)->where('shared_id', '=', 1)->first(); ?> @else
@@ -44,8 +40,9 @@
             </div>
         </div>
     </div>
-    @endforeach @endif
+    @endforeach 
 </div>
+@endif
 <div class="row justify-content-md-center">
     <div class="col-md-auto">
         <div class="text-center">{{$favs->links()}}</div>

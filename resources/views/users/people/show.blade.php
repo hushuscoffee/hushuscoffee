@@ -11,21 +11,15 @@
         <h6>{{ $people['address'] }}</h6>
         <h6>{{ $people['phone'] }}</h6>
         <h6>
-            <ins>
-                    <a href=" {{$people['sociallinks']}} ">
-                        {{ $people['sociallinks'] }}
-                    </a>
-                </ins> &ensp;
-            <ins>
-                    <a href=" {{ $people['portfoliolinks'] }} ">
-                        {{ $people['portfoliolinks'] }}
-                    </a>
-                </ins>
+            <a href="{{$people['sociallinks']}}" target="_blank">
+                {{ $people['sociallinks'] }}
+            </a> &ensp;
+            <a href="{{ $people['portfoliolinks'] }}" target="_blank">
+                {{ $people['portfoliolinks'] }}
+            </a>
         </h6>
     </div>
-
     <hr>
-
     <div class="text-center lead">
         {{ $people['aboutme'] }}
     </div>
@@ -39,8 +33,7 @@
         <hr> @if($achievement != null) @foreach($achievement as $award)
         <p>{{$award->title}}</p>
         <p>
-            <a class="w3-text-blue" style="text-decoration: underline;" href="{{$award['link']}}" target="_blank">
-                    {{$award['link']}}</a> {{$award['issuer']}}
+            <a class="w3-text-blue" style="text-decoration: underline;" href="{{$award['link']}}" target="_blank">{{$award['link']}}</a> {{$award['issuer']}}
         </p>
         <p>{{$award['month']}} {{$award['year']}}</p>
         <p>{{$award['description']}}</p>
@@ -54,8 +47,7 @@
         <label>{{$exp->title}}</label>
         <p>{{$exp->company}}, {{$exp->location}}</p>
         <p>
-            <a style="text-decoration: underline;" href="{{$exp->link}}" target="_blank">
-                        {{$exp->link}}</a>
+            <a style="text-decoration: underline;" href="{{$exp->link}}" target="_blank"> {{$exp->link}}</a>
         </p>
         <p>{{$exp->monthf}} {{$exp->yearf}} - {{$exp->montht}} {{$exp->yeart}}</p>
         <p>{{$exp->description}}</p>

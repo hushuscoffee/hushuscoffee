@@ -11,10 +11,9 @@
 |
  */
 
-Route::get('/', function(){
-    return view('pages.welcome');
-});
+Route::get('/', 'PageController@index')->name('index');
 Route::get('dashboard', 'PageController@dashboard')->name('dashboard');
+Route::get('/search', 'PageController@search')->name('search');
 Route::resource('role', 'RoleController');
 Route::resource('category', 'CategoryController');
 Route::resource('shared', 'SharedController');
