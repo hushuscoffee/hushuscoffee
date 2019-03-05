@@ -31,6 +31,7 @@ class BrewingController extends Controller
         } else {
             $brewings = Brewing::where('shared_id','=',1)->orderBy('id', 'desc')->paginate(6);
         }
+        $favourites = null;
         if(Auth::check()){
             $favourites = Favourite::where('user_id', '=', Auth::user()->id)->get();
         }

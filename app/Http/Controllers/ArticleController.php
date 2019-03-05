@@ -161,6 +161,7 @@ class ArticleController extends Controller
         } else {
             $articles = Article::where('category_id','=',1)->where('shared_id','=',1)->orderBy('id', 'desc')->paginate(6);
         }
+        $favourites = null;
         if(Auth::check()){
             $favourites = Favourite::where('user_id', '=', Auth::user()->id)->get();
         }
@@ -174,6 +175,7 @@ class ArticleController extends Controller
         } else {
             $articles = Article::where('category_id','=',2)->where('shared_id','=',1)->orderBy('id', 'desc')->paginate(6);
         }
+        $favourites = null;
         if(Auth::check()){
             $favourites = Favourite::where('user_id', '=', Auth::user()->id)->get();
         }
@@ -187,6 +189,7 @@ class ArticleController extends Controller
         } else {
             $articles = Article::where('category_id','=',3)->where('shared_id','=',1)->orderBy('id', 'desc')->paginate(6);
         }
+        $favourites = null;
         if(Auth::check()){
             $favourites = Favourite::where('user_id', '=', Auth::user()->id)->get();
         }
