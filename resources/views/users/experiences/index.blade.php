@@ -134,7 +134,11 @@
             <a style="text-decoration: underline;" href="{{$exp->link}}" target="_blank">
                           {{$exp->link}}</a>
         </p>
+        @if($exp->status==0)
         <p>{{$exp->monthf}} {{$exp->yearf}} - {{$exp->montht}} {{$exp->yeart}}</p>
+        @else
+        <p>Start from {{$exp->monthf}} {{$exp->yearf}} and currently working here</p>
+        @endif
         <p>{{$exp->description}}</p>
         <form action="{{ route('experience.delete', $exp->id) }}" method="POST">
             {{ csrf_field() }} {{ method_field('DELETE') }}

@@ -111,13 +111,14 @@ class ProfileController extends Controller
         $experience->company = $request->company;
         $experience->position = $request->position;
         $experience->location = $request->location;
-        $experience->status = $request->get('status');
-        if($request->get('status')==1){
+        if($request->get('status')!==null){
+            $experience->status = $request->get('status');
             $experience->monthf = $request->monthf_check;
             $experience->yearf = $request->yearf_check;
             $experience->montht = null;
-            $experience->yeart = null;
+            $experience->yeart = null;    
         }else{
+            $experience->status = 0;
             $experience->monthf = $request->monthf;
             $experience->yearf = $request->yearf;
             $experience->montht = $request->montht;
