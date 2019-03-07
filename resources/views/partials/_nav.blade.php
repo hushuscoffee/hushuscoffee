@@ -1,17 +1,17 @@
-<nav class="navbar fixed-top navbar-expand-lg navbar-dark bg-dark">
-  <a class="navbar-brand" href="">
+<nav class="navbar fixed-top navbar-expand-lg bg-default">
+  <a class="navbar-brand" href="/">
         {{-- <i class="fa d-inline fa-lg fa-coffee"></i>
         <b> Coffee Story</b> --}} 
       <img src="{{asset('images/logo/hushus_coffee.png')}}" width="180px"/>
       </a>
-  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+  <button class="navbar-toggler navbar-light" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
     aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
   </button>
 
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
-    <form class="form-inline my-2 my-lg-0 mr-auto">
-      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search">
+    <form class="form-inline my-2 my-lg-0 mr-auto" action="{{url('/search')}}">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" id="search">
       <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
     </form>
     <ul class="navbar-nav">
@@ -32,8 +32,8 @@
       <li class="nav-item {{ Request::is('recipe*') ? "active" : "" }}">
         <a class="nav-link" href="{{route('recipe')}}">Recipe</a>
       </li>
-      <li class="nav-item {{ Request::is('people') ? "active" : "" }}">
-        <a class="nav-link" href="#">People</a>
+      <li class="nav-item {{ Request::is('people*') ? "active" : "" }}">
+        <a class="nav-link" href="{{route('people')}}">People</a>
       </li>
       @if(Auth::check())
       <li class="nav-item dropdown {{ Request::is('note','note/*') ? "active" : "" }}">
@@ -57,10 +57,10 @@
         </div>
       </li>
       @else
-      <li class="nav-item">
+      <li class="nav-item {{ Request::is('getRegister') ? "active" : "" }}">
         <a class="nav-link" href="{{route('getRegister')}}"><i class="fa d-inline fa-md fa-user-plus"></i> Register</a>
       </li>
-      <li class="nav-item">
+      <li class="nav-item {{ Request::is('getLogin') ? "active" : "" }}">
         <a class="nav-link" href="{{route('getLogin')}}"><i class="fa d-inline fa-lg fa-user-circle"></i> Login</a>
       </li>
       @endif

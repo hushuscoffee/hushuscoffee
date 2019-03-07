@@ -3,8 +3,14 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-
+use App\Profile;
+use App\Brewing;
+use App\Article;
+use App\Recipe;
+use App\Favourite;
 use App\Http\Requests;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\Auth;
 
 class PageController extends Controller
 {
@@ -15,7 +21,11 @@ class PageController extends Controller
      */
     public function index()
     {
-        return view('main');
+        $this->data['brewings'] = Brewing::where('shared_id', '=', 1)->where('user_id', '=', 1)->orderBy('id', 'desc')->limit(2)->get();		       	      
+        $this->data['recipes'] = Recipe::where('shared_id', '=', 1)->where('user_id', '=', 1)->orderBy('id', 'desc')->limit(2)->get();		       	      
+        $this->data['articles'] = Article::where('shared_id', '=', 1)->orderBy('id', 'desc')->limit(4)->get();
+        $this->data['people'] = Profile::orderBy('id', 'desc')->inRandomOrder()->limit(5)->get();
+        return view('index', $this->data);
     }
 
     /**
@@ -28,59 +38,16 @@ class PageController extends Controller
         return view('admin.dashboard');
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+    public function search(){
+        $key = Input::get('search');
+        $this->data['articles'] = Article::where('title', 'like', '%' . $key . '%')->where('shared_id', '=', 1)->orderBy('id', 'desc')->get();
+        $this->data['brewings'] = Brewing::where('title', 'like', '%' . $key . '%')->where('shared_id', '=', 1)->orderBy('id', 'desc')->get();
+        $this->data['recipes'] = Recipe::where('title', 'like', '%' . $key . '%')->where('shared_id', '=', 1)->orderBy('id', 'desc')->get();
+        $this->data['people'] = Profile::where('fullname', 'like', '%' . $key . '%')->orderBy('id', 'desc')->get();
+        $this->data['favourites'] = null;
+        if(Auth::check()){
+            $this->data['favourites'] = Favourite::where('user_id', '=', Auth::user()->id)->get();
+        }
+        return view('search', $this->data);
     }
 }
