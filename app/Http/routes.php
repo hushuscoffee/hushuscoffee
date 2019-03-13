@@ -16,6 +16,20 @@ if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
 }
 
 Route::get('api/articles', 'ApiController@getAllArticle');
+Route::get('api/events', 'ApiController@getAllEvents');
+Route::get('api/news', 'ApiController@getAllNews');
+Route::get('api/tips', 'ApiController@getAllTips');
+Route::get('api/brewing', 'ApiController@getAllBrewing');
+Route::get('api/recipe', 'ApiController@getAllRecipe');
+Route::get('api/people', 'ApiController@getAllPeople');
+Route::get('api/articles/{id}', 'ApiController@getDetailArticle');
+Route::get('api/events/{id}', 'ApiController@getDetailEvents');
+Route::get('api/news/{id}', 'ApiController@getDetailNews');
+Route::get('api/tips/{id}', 'ApiController@getDetailTips');
+Route::get('api/brewing/{id}', 'ApiController@getDetailBrewing');
+Route::get('api/recipe/{id}', 'ApiController@getDetailRecipe');
+Route::get('api/people/{id}', 'ApiController@getDetailPeople');
+
 
 Route::get('/', function(){
     return view('pages.welcome');
