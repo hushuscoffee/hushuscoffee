@@ -30,10 +30,7 @@ Route::get('api/brewing/{id}', 'ApiController@getDetailBrewing');
 Route::get('api/recipe/{id}', 'ApiController@getDetailRecipe');
 Route::get('api/people/{id}', 'ApiController@getDetailPeople');
 
-
-Route::get('/', function(){
-    return view('pages.welcome');
-});
+Route::get('/', 'PageController@index')->name('index');
 Route::get('dashboard', 'PageController@dashboard')->name('dashboard');
 Route::get('/search', 'PageController@search')->name('search');
 Route::resource('role', 'RoleController');
