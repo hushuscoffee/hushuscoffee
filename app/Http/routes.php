@@ -15,6 +15,11 @@ if(version_compare(PHP_VERSION, '7.2.0', '>=')) {
     error_reporting(E_ALL ^ E_NOTICE ^ E_WARNING);
 }
 
+Route::get('api/home-articles', 'ApiController@getHomeArticle');
+Route::get('api/home-people', 'ApiController@getHomePeople');
+Route::get('api/home-news', 'ApiController@getHomeNews');
+Route::get('api/home-events', 'ApiController@getHomeEvents');
+Route::get('api/home-tips', 'ApiController@getHomeTips');
 Route::get('api/articles', 'ApiController@getAllArticle');
 Route::get('api/events', 'ApiController@getAllEvents');
 Route::get('api/news', 'ApiController@getAllNews');

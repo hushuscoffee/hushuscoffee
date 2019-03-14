@@ -27,6 +27,65 @@ class ApiController extends Controller
         ], 200);
     }
 
+    public function getHomeArticle()
+    {
+        $articles = Article::orderBy('id','desc')->limit(5)->get();
+
+        return response()->json([
+            'message'=> "success",
+            'data' => $articles
+        ], 200);
+    }
+
+    public function getHomePeople()
+    {
+        $people = Profile::orderBy('id','desc')->limit(5)->get();
+
+        return response()->json([
+            'message'=> "success",
+            'data' => $people
+        ], 200);
+    }
+
+    public function getHomeEvents()
+    {
+        $events = DB::table('articles')
+        ->where('category_id', 1)
+        ->orderBy('id','desc')->limit(8)
+        ->get();
+
+        return response()->json([
+            'message'=> "success",
+            'data' => $events
+        ], 200);
+    }
+
+    public function getHomeNews()
+    {
+        $news = DB::table('articles')
+        ->where('category_id', 2)
+        ->orderBy('id','desc')->limit(8) 
+        ->get();
+
+        return response()->json([
+            'message'=> "success",
+            'data' => $news
+        ], 200);
+    }
+
+    public function getHomeTips()
+    {
+        $tips = DB::table('articles')
+            ->where('category_id', 3)
+            ->orderBy('id','desc')->limit(8)
+            ->get();
+
+        return response()->json([
+            'message'=> "success",
+            'data' => $tips
+        ], 200);
+    }
+
     public function getAllEvents()
     {
         $events = DB::table('articles')->where('category_id', 1)->get();
