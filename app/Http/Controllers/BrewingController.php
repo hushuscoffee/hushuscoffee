@@ -139,7 +139,8 @@ class BrewingController extends Controller
         }
         $brewing->step_images = json_encode($step_image);
         $brewing->save();
-        die();
+        Session::flash('success', 'This brewing was successfully saved');
+        return redirect(route('myBrewing.show',$brewing->slug));
     }
 
     /**
@@ -246,7 +247,6 @@ class BrewingController extends Controller
 
         $counter=1;
         $step_image = array();
-        print_r($images);
         foreach($step_images as $key => $image){
             $fileimage='none';
             if($image!=""){
@@ -264,9 +264,9 @@ class BrewingController extends Controller
             array_push($step_image, $fileimage);
         }
         $brewing->step_images = json_encode($step_image);
-        print_r($brewing->step_images);
         $brewing->save();
-        die();
+        Session::flash('success', 'This brewing was successfully updated');
+        return redirect(route('myBrewing.show',$brewing->slug));
     }
 
     /**
@@ -277,6 +277,8 @@ class BrewingController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $brewing = Brewing::find($id);
+        $brewing->delete();
+        return redirect(route('brewing.all'))->with('info','Success! Brewing has been deleted');
     }
 }

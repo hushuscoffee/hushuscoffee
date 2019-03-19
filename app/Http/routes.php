@@ -34,6 +34,19 @@ Route::get('api/tips/{id}', 'ApiController@getDetailTips');
 Route::get('api/brewing/{id}', 'ApiController@getDetailBrewing');
 Route::get('api/recipe/{id}', 'ApiController@getDetailRecipe');
 Route::get('api/people/{id}', 'ApiController@getDetailPeople');
+Route::post('api/login', 'ApiController@login');
+Route::post('api/register', 'ApiController@register');
+Route::post('api/article/create', 'ApiController@storeArticle');        
+Route::put('api/article/edit/{id}', 'ApiController@updateArticle');
+Route::delete('api/article/destroy/{id}', 'ApiController@destroyArticle');
+
+Route::post('api/brewing/create', 'ApiController@storeBrewing');        
+Route::put('api/brewing/edit/{id}', 'ApiController@updateBrewing');
+Route::delete('api/brewing/destroy/{id}', 'ApiController@destroyBrewing');
+
+Route::post('api/recipe/create', 'ApiController@storeRecipe');        
+Route::put('api/recipe/edit/{id}', 'ApiController@updateRecipe');
+Route::delete('api/recipe/destroy/{id}', 'ApiController@destroyRecipe');
 
 Route::get('/', 'PageController@index')->name('index');
 Route::get('dashboard', 'PageController@dashboard')->name('dashboard');

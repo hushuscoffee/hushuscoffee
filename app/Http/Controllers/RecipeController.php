@@ -126,7 +126,8 @@ class RecipeController extends Controller
         }
         $recipe->step_images = json_encode($step_image);
         $recipe->save();
-        die();
+        Session::flash('success', 'This recipe was successfully saved');
+        return redirect(route('myRecipe.show',$recipe->slug));
     }
 
     /**
@@ -220,7 +221,6 @@ class RecipeController extends Controller
 
         $counter=1;
         $step_image = array();
-        print_r($images);
         foreach($step_images as $key => $image){
             $fileimage='none';
             if($image!=""){
@@ -238,9 +238,9 @@ class RecipeController extends Controller
             array_push($step_image, $fileimage);
         }
         $recipe->step_images = json_encode($step_image);
-        print_r($recipe->step_images);
         $recipe->save();
-        die();
+        Session::flash('success', 'This recipe was successfully updated');
+        return redirect(route('myRecipe.show',$recipe->slug));
     }
 
     /**
@@ -251,6 +251,8 @@ class RecipeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $recipe = Recipe::find($id);
+        $recipe->delete();
+        return redirect(route('recipe.all'))->with('info','Success! Recipe has been deleted');
     }
 }
