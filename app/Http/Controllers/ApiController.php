@@ -28,7 +28,7 @@ class ApiController extends Controller
      */
     public function getAllArticle()
     {
-        $articles = Article::all();
+        $articles = Article::where('shared_id','=',1)->orderBy('id', 'desc')->get();
 
         return response()->json([
             'message'=> "success",
@@ -38,7 +38,7 @@ class ApiController extends Controller
 
     public function getHomeArticle()
     {
-        $articles = Article::orderBy('id','desc')->limit(5)->get();
+        $articles = Article::where('shared_id','=',1)->orderBy('id','desc')->limit(5)->get();
 
         return response()->json([
             'message'=> "success",
@@ -60,6 +60,7 @@ class ApiController extends Controller
     {
         $events = DB::table('articles')
         ->where('category_id', 1)
+        ->where('shared_id','=',1)
         ->orderBy('id','desc')->limit(8)
         ->get();
 
@@ -73,6 +74,7 @@ class ApiController extends Controller
     {
         $news = DB::table('articles')
         ->where('category_id', 2)
+        ->where('shared_id','=',1)
         ->orderBy('id','desc')->limit(8) 
         ->get();
 
@@ -86,6 +88,7 @@ class ApiController extends Controller
     {
         $tips = DB::table('articles')
             ->where('category_id', 3)
+            ->where('shared_id','=',1)
             ->orderBy('id','desc')->limit(8)
             ->get();
 
@@ -97,7 +100,7 @@ class ApiController extends Controller
 
     public function getAllEvents()
     {
-        $events = DB::table('articles')->where('category_id', 1)->get();
+        $events = DB::table('articles')->where('category_id', 1)->where('shared_id','=',1)->get();
 
         return response()->json([
             'message'=> "success",
@@ -107,7 +110,7 @@ class ApiController extends Controller
 
     public function getAllNews()
     {
-        $news = DB::table('articles')->where('category_id', 2)->get();
+        $news = DB::table('articles')->where('category_id', 2)->where('shared_id','=',1)->get();
 
         return response()->json([
             'message'=> "success",
@@ -117,7 +120,7 @@ class ApiController extends Controller
 
     public function getAllTips()
     {
-        $tips = DB::table('articles')->where('category_id', 3)->get();
+        $tips = DB::table('articles')->where('category_id', 3)->where('shared_id','=',1)->get();
 
         return response()->json([
             'message'=> "success",
@@ -127,7 +130,7 @@ class ApiController extends Controller
 
     public function getAllBrewing()
     {
-        $brewing = Brewing::all();
+        $brewing = Brewing::where('shared_id','=',1)->orderBy('id', 'desc')->get();
 
         return response()->json([
             'message'=> "success",
@@ -137,7 +140,7 @@ class ApiController extends Controller
 
     public function getAllRecipe()
     {
-        $recipe = Recipe::all();
+        $recipe = Recipe::where('shared_id','=',1)->orderBy('id', 'desc')->get();
 
         return response()->json([
             'message'=> "success",
