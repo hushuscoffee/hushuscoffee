@@ -276,11 +276,11 @@ class ApiController extends Controller
         ]);
         // Validation Process
         if ($validator1->fails()) {
-            return response()->json(['message' => 'error', 'error' => 'Username has been registered. Please choose another username'], 401);
+            return response()->json(['message' => "error", 'error' => "Username has been registered. Please choose another username"], 401);
         }elseif($validator2->fails()){
-            return response()->json(['message' => 'error', 'error' => 'Email has been registered. Please choose another email'], 401);
+            return response()->json(['message' => "error", 'error' => "Email has been registered. Please choose another email"], 401);
         }elseif($request->password!=$request->password_confirmation){
-            return response()->json(['message' => 'error', 'error' => 'Password and confirm password did not match. Please enter your password carefully'], 401);
+            return response()->json(['message' => "error", 'error' => "Password and confirm password did not match. Please enter your password carefully"], 401);
         }
         else{
             // Create User
