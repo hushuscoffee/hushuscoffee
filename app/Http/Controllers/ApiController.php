@@ -254,7 +254,7 @@ class ApiController extends Controller
     public function login(Request $request)
     {
     	if(!Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-    		return response()->json(['message' => 'error', 'error' => 'Your credential is wrong'], 401);
+    		return response()->json(['message' => 'error', 'error' => 'Wrong Username or Password'], 401);
     	}
 
     	$user = User::find(Auth::user()->id);
