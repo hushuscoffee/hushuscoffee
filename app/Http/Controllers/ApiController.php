@@ -254,13 +254,13 @@ class ApiController extends Controller
     public function login(Request $request)
     {
     	if(!Auth::attempt(['username' => $request->username, 'password' => $request->password])) {
-    		return response()->json(['message' => 'error', 'error' => 'Wrong Username or Password'], 401);
+    		return response()->json(['message' => "error", 'error' => "Wrong Username or Password"], 401);
     	}
 
     	$user = User::find(Auth::user()->id);
 
     	return response()->json([
-            'message' => 'success',
+            'message' => "success",
             'data' => $user
         ], 200);
     }
@@ -302,7 +302,7 @@ class ApiController extends Controller
             
 
             return response()->json([
-                'message' => 'success',
+                'message' => "success",
                 'data' => $user
             ], 200);
         }
