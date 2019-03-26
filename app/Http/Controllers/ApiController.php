@@ -259,7 +259,8 @@ class ApiController extends Controller
             ], 200);
         }else{
             return response()->json([
-                'message'=> "error"
+                'message'=> "error",
+                'data' => $articles
             ], 401);
         }
     }
@@ -274,7 +275,8 @@ class ApiController extends Controller
             ], 200);
         }else{
             return response()->json([
-                'message'=> "error"
+                'message'=> "error",
+                'data' => $brewings
             ], 401);
         }
     }
@@ -289,7 +291,8 @@ class ApiController extends Controller
             ], 200);
         }else{
             return response()->json([
-                'message'=> "error"
+                'message'=> "error",
+                'data' => $recipes
             ], 401);
         }
     }
