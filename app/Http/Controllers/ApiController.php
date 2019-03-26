@@ -166,7 +166,7 @@ class ApiController extends Controller
                         ->get();
 
         return response()->json([
-            'message' => 'success',
+            'message' => "success",
             'data' => $article
         ], 200);
     }
@@ -179,7 +179,7 @@ class ApiController extends Controller
                         ->get();
 
         return response()->json([
-            'message' => 'success',
+            'message' => "success",
             'data' => $events
         ], 200);
     }
@@ -192,7 +192,7 @@ class ApiController extends Controller
                         ->get();
 
         return response()->json([
-            'message' => 'success',
+            'message' => "success",
             'data' => $news
         ], 200);
     }
@@ -205,7 +205,7 @@ class ApiController extends Controller
                         ->get();
 
         return response()->json([
-            'message' => 'success',
+            'message' => "success",
             'data' => $tips
         ], 200);
     }
@@ -218,7 +218,7 @@ class ApiController extends Controller
                         ->get();
 
         return response()->json([
-            'message' => 'success',
+            'message' => "success",
             'data' => $brewing
         ], 200);
     }
@@ -231,7 +231,7 @@ class ApiController extends Controller
                         ->get();
 
         return response()->json([
-            'message' => 'success',
+            'message' => "success",
             'data' => $recipe
         ], 200);
     }
@@ -244,7 +244,7 @@ class ApiController extends Controller
                         ->get();
 
         return response()->json([
-            'message' => 'success',
+            'message' => "success",
             'data' => $profile
         ], 200);
     }
@@ -338,7 +338,7 @@ class ApiController extends Controller
         
         $article->save();
         return response()->json([
-            'message' => 'success',
+            'message' => "success",
             'data' => $article
         ], 200);
     }
@@ -371,7 +371,7 @@ class ApiController extends Controller
         $article->save();
 
         return response()->json([
-            'message' => 'success',
+            'message' => "success",
             'data' => $article
         ], 200);
     }
@@ -382,7 +382,7 @@ class ApiController extends Controller
         $article->delete();
 
         return response()->json([
-            'message' => 'success'
+            'message' => "success"
         ], 200);
     }
     //End of Article CRUD API
@@ -474,7 +474,7 @@ class ApiController extends Controller
         $brewing->step_images = json_encode($step_image);
         $brewing->save();
         return response()->json([
-            'message' => 'success',
+            'message' => "success",
             'data' => $brewing
         ], 200);
     }
@@ -571,7 +571,7 @@ class ApiController extends Controller
         $brewing->step_images = json_encode($step_image);
         $brewing->save();
         return response()->json([
-            'message' => 'success',
+            'message' => "success",
             'data' => $brewing
         ], 200);
     }
@@ -581,7 +581,7 @@ class ApiController extends Controller
         $brewing = Brewing::find($id);
         $brewing->delete();
         return response()->json([
-            'message' => 'success'
+            'message' => "success"
         ], 200);
     }
     //End of Brewing CRUD API
@@ -661,7 +661,7 @@ class ApiController extends Controller
         $recipe->save();
 
         return response()->json([
-            'message' => 'success',
+            'message' => "success",
             'data' => $recipe
         ], 200);
     }
@@ -746,7 +746,7 @@ class ApiController extends Controller
         $recipe->save();
 
         return response()->json([
-            'message' => 'success',
+            'message' => "success",
             'data' => $recipe
         ], 200);
     }
@@ -757,7 +757,7 @@ class ApiController extends Controller
         $recipe->delete();
 
         return response()->json([
-            'message' => 'success'
+            'message' => "success"
         ], 200);
     }
 
