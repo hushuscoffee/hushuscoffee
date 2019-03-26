@@ -18,6 +18,10 @@ use App\Brewing;
 use App\Recipe;
 use App\Profile;
 use App\Favourite;
+use App\Achievement;
+use App\Experience;
+use App\Language;
+use App\Skill;
 use App\User;
 
 class ApiController extends Controller
