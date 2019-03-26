@@ -17,6 +17,7 @@ use App\Article;
 use App\Brewing;
 use App\Recipe;
 use App\Profile;
+use App\Favourite;
 use App\User;
 
 class ApiController extends Controller
@@ -238,14 +239,19 @@ class ApiController extends Controller
 
     public function getDetailPeople($id)
     {
-        $profile = DB::table('profiles')
-                        ->select('*')
-                        ->where('id', '=', $id)
-                        ->get();
+        $profile = Profile::where('user_id', '=', $id)->first();
+        $achievement = Achievement::where('user_id', '=', $id)->orderBy('id','desc')->get();
+        $experience = Experience::where('user_id', '=', $id)->orderBy('id','desc')->get();   
+        $skill = Skill::where('user_id', 'like', $id)->orderBy('id','desc')->get();    	
+        $language = Language::where('user_id', 'like', $id)->orderBy('id','desc')->get();
 
         return response()->json([
             'message' => "success",
-            'data' => $profile
+            'profile' => $profile,
+            'achievement' => $achievement,
+            'experience' => $experience,
+            'skill' => $skill,
+            'language' => $language
         ], 200);
     }
 
@@ -295,6 +301,37 @@ class ApiController extends Controller
                 'data' => $recipes
             ], 401);
         }
+    }
+
+    public function getFavourite($id){
+        $favs = Favourite::where('user_id','=',$id)->orderBy('id', 'desc')->get();
+        if ($favs->count()!=0){
+            return response()->json([
+                'message'=> "success",
+                'data' => $favs
+            ], 200);
+        }else{
+            return response()->json([
+                'message'=> "error",
+                'data' => $favs
+            ], 401);
+        }
+    }
+
+    public function add($id, $category)
+    {
+        $favourite = new Favourite;
+        $favourite->user_id = Auth::user()->id;
+        if($category==1){
+            $favourite->article_id = $id;
+        }elseif($category==2){
+            $favourite->brewing_id = $id;
+        }elseif($category==3){
+            $favourite->recipe_id = $id;
+        }
+        $favourite->save();
+        Session::flash('success', 'Successfully added to favourites');
+        return redirect()->back();
     }
 
     //Authentication API
