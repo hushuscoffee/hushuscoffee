@@ -34,6 +34,10 @@ Route::get('api/tips/{id}', 'ApiController@getDetailTips');
 Route::get('api/brewing/{id}', 'ApiController@getDetailBrewing');
 Route::get('api/recipe/{id}', 'ApiController@getDetailRecipe');
 Route::get('api/people/{id}', 'ApiController@getDetailPeople');
+Route::get('api/my-article/{id}', 'ApiController@getMyArticle');
+Route::get('api/my-brewing/{id}', 'ApiController@getMyBrewing');
+Route::get('api/my-recipe/{id}', 'ApiController@getMyRecipe');
+
 Route::post('api/login', 'ApiController@login');
 Route::post('api/register', 'ApiController@register');
 Route::post('api/article/create', 'ApiController@storeArticle');        

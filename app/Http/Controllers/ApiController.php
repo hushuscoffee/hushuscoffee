@@ -249,6 +249,51 @@ class ApiController extends Controller
         ], 200);
     }
 
+    public function getMyArticle($id)
+    {
+        $articles = Article::where('user_id','=',$id)->orderBy('id', 'desc')->get();
+        if ($articles->count()!=0){
+            return response()->json([
+                'message'=> "success",
+                'data' => $articles
+            ], 200);
+        }else{
+            return response()->json([
+                'message'=> "error"
+            ], 401);
+        }
+    }
+
+    public function getMyBrewing($id)
+    {
+        $brewings = Brewing::where('user_id','=',$id)->orderBy('id', 'desc')->get();
+        if ($brewings->count()!=0){
+            return response()->json([
+                'message'=> "success",
+                'data' => $brewings
+            ], 200);
+        }else{
+            return response()->json([
+                'message'=> "error"
+            ], 401);
+        }
+    }
+
+    public function getMyRecipe($id)
+    {
+        $recipes = Recipe::where('user_id','=',$id)->orderBy('id', 'desc')->get();
+        if ($recipes->count()!=0){
+            return response()->json([
+                'message'=> "success",
+                'data' => $recipes
+            ], 200);
+        }else{
+            return response()->json([
+                'message'=> "error"
+            ], 401);
+        }
+    }
+
     //Authentication API
 
     public function login(Request $request)
