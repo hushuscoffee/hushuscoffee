@@ -307,36 +307,43 @@ class ApiController extends Controller
         }
     }
 
-    public function getFavourite($id){
-        $favs = Favourite::where('user_id','=',$id)->orderBy('id', 'desc')->get();
-        if ($favs->count()!=0){
-            return response()->json([
-                'message'=> "success",
-                'data' => $favs
-            ], 200);
-        }else{
-            return response()->json([
-                'message'=> "error",
-                'data' => $favs
-            ], 401);
-        }
-    }
+    // public function getFavourite($id){
+    //     $favs = Favourite::where('user_id','=',$id)->orderBy('id', 'desc')->get();
+    //     $article = Article::where('id', '=', $fav->article_id)->where('shared_id', '=', 1)->first();
+    //     $brewing = Brewing::where('id', '=', $fav->brewing_id)->where('shared_id', '=', 1)->first();
+    //     $recipe = Recipe::where('id', '=', $fav->recipe_id)->where('shared_id', '=', 1)->first();
+    //     if ($favs->count()!=0){
+    //         return response()->json([
+    //             'message'=> "success",
+    //             'article' => $article,
+    //             'brewing' => $brewing,
+    //             'recipe' => $recipe
+    //         ], 200);
+    //     }else{
+    //         return response()->json([
+    //             'message'=> "error",
+    //             'article' => $article,
+    //             'brewing' => $brewing,
+    //             'recipe' => $recipe
+    //         ], 401);
+    //     }
+    // }
 
-    public function add($id, $category)
-    {
-        $favourite = new Favourite;
-        $favourite->user_id = Auth::user()->id;
-        if($category==1){
-            $favourite->article_id = $id;
-        }elseif($category==2){
-            $favourite->brewing_id = $id;
-        }elseif($category==3){
-            $favourite->recipe_id = $id;
-        }
-        $favourite->save();
-        Session::flash('success', 'Successfully added to favourites');
-        return redirect()->back();
-    }
+    // public function add($user, $id, $category)
+    // {
+    //     $favourite = new Favourite;
+    //     $favourite->user_id = Auth::user()->id;
+    //     if($category==1){
+    //         $favourite->article_id = $id;
+    //     }elseif($category==2){
+    //         $favourite->brewing_id = $id;
+    //     }elseif($category==3){
+    //         $favourite->recipe_id = $id;
+    //     }
+    //     $favourite->save();
+    //     Session::flash('success', 'Successfully added to favourites');
+    //     return redirect()->back();
+    // }
 
     //Authentication API
 
@@ -409,15 +416,15 @@ class ApiController extends Controller
         ]);
         
         $filename = 'unknowncover.jpg';
-        if ($request->hasFile('file')) {
-            $hashed = md5(uniqid(Auth::user()->id, true));
-            $image = Input::file('file');
-			$filename  = $hashed.'_'.time() . '.' . $image->getClientOriginalExtension();
-			$path = public_path('uploads/articles/' . $filename);
-			Image::make($image->getRealPath())->save($path);
-        }
+        // if ($request->hasFile('file')) {
+        //     $hashed = md5(uniqid($request->user, true));
+        //     $image = Input::file('file');
+		// 	$filename  = $hashed.'_'.time() . '.' . $image->getClientOriginalExtension();
+		// 	$path = public_path('uploads/articles/' . $filename);
+		// 	Image::make($image->getRealPath())->save($path);
+        // }
         $article = new Article;
-        $article->status_id = $request->status;
+        $article->status_id = 1;
         $article->shared_id = $request->shared;
         $article->category_id = $request->category;
         $article->user_id = $request->user;
