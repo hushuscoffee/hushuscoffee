@@ -416,13 +416,13 @@ class ApiController extends Controller
         ]);
         
         $filename = 'unknowncover.jpg';
-        if ($request->hasFile('file')) {
-            $hashed = md5(uniqid($request->user, true));
-            $image = Input::file('file');
-			$filename  = $hashed.'_'.time() . '.' . $image->getClientOriginalExtension();
-			$path = public_path('uploads/articles/' . $filename);
-			Image::make($image->getRealPath())->save($path);
-        }
+        // if ($request->hasFile('file')) {
+        //     $hashed = md5(uniqid($request->user, true));
+        //     $image = Input::file('file');
+		// 	$filename  = $hashed.'_'.time() . '.' . $image->getClientOriginalExtension();
+		// 	$path = public_path('uploads/articles/' . $filename);
+		// 	Image::make($image->getRealPath())->save($path);
+        // }
         $article = new Article;
         $article->status_id = 1;
         $article->shared_id = $request->shared;
