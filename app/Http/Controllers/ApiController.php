@@ -452,7 +452,7 @@ class ApiController extends Controller
         $article->category_id = $request->category;
 
         if ($request->hasFile('file')) {
-            $hashed = md5(uniqid(Auth::user()->id, true));
+            $hashed = md5(uniqid($request->user, true));
             $image = Input::file('file');
 			$filename  = $hashed.'_'.time() . '.' . $image->getClientOriginalExtension();
 			$path = public_path('uploads/articles/' . $filename);
@@ -494,7 +494,7 @@ class ApiController extends Controller
         $step_images = $request->file('stepImage');
 
         $filename = 'unknowncover.jpg';
-        $hashed = md5(uniqid(Auth::user()->id*rand(), true));
+        $hashed = md5(uniqid($request->user*rand(), true));
         if ($request->hasFile('cover')) {
             $image = Input::file('cover');
 			$filename  = $hashed.'_'.time() . '.' . $image->getClientOriginalExtension();
@@ -506,9 +506,9 @@ class ApiController extends Controller
         $brewing->title = $request->title;
         $brewing->description = $request->description;
         $brewing->image = $filename;
-        $brewing->status_id = $request->status;
+        $brewing->status_id = 1;
         $brewing->shared_id = $request->shared;
-        $brewing->user_id = Auth::user()->id;
+        $brewing->user_id = $request->user;
 
         $time = array(
             'time1' => $request->time1,
@@ -583,7 +583,7 @@ class ApiController extends Controller
         $steps = $request->step;
         $images = $request->imageName;
         $step_images = $request->file('stepImage');
-        $hashed = md5(uniqid(Auth::user()->id*rand(), true));
+        $hashed = md5(uniqid($request->user*rand(), true));
 
         $brewing = Brewing::findOrFail($id);
         $brewing->title = $request->title;
@@ -693,7 +693,7 @@ class ApiController extends Controller
         $step_images = $request->file('stepImage');
 
         $filename = 'unknowncover.jpg';
-        $hashed = md5(uniqid(Auth::user()->id*rand(), true));
+        $hashed = md5(uniqid($request->user*rand(), true));
         if ($request->hasFile('cover')) {
             $image = Input::file('cover');
 			$filename  = $hashed.'_'.time() . '.' . $image->getClientOriginalExtension();
@@ -705,7 +705,7 @@ class ApiController extends Controller
         $recipe->title = $request->title;
         $recipe->description = $request->description;
         $recipe->image = $filename;
-        $recipe->status_id = $request->status;
+        $recipe->status_id = 1;
         $recipe->shared_id = $request->shared;
         $recipe->user_id = Auth::user()->id;
 
@@ -770,7 +770,7 @@ class ApiController extends Controller
         $steps = $request->step;
         $images = $request->imageName;
         $step_images = $request->file('stepImage');
-        $hashed = md5(uniqid(Auth::user()->id*rand(), true));
+        $hashed = md5(uniqid($request->user*rand(), true));
 
         $recipe = Recipe::findOrFail($id);
         $recipe->title = $request->title;
