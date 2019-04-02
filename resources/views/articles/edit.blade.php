@@ -2,10 +2,10 @@
 @section('title', '| Edit My Article')
 @section('stylesheets')
 <style>
-  img {
-    width: 100%;
-    height: auto;
-  }
+  .cover-image {
+        width: 100%;
+        height: auto;
+    }
 </style>
 @endsection 
 @section('content')
@@ -50,7 +50,7 @@
         <div class="col-md-10">
           <input type="file" class="form-control" id="DragAndDrop" onchange="imagePreview();" name="file">
           <br>
-          <img id="image" src="{{asset('uploads/articles/'.$article->image)}}">
+          <img class="cover-image" id="image" src="{{asset('uploads/articles/'.$article->image)}}">
         </div>
       </div>
       <br>

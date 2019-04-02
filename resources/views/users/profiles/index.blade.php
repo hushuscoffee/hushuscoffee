@@ -24,7 +24,7 @@
                 <input type="file" class="form-control" name="photo" id="DragAndDrop" onchange="imagePreview();">
             </div>
             <div class="form-group">
-                <label>Full Name</label>
+                <label>Full Name <label style="color:red" pull-right>*)</label></label>
                 <input type="text" class="form-control" name="fullname" value="{{$basic['fullname']}}" required>
             </div>
             <div class="form-group">
@@ -45,11 +45,11 @@
         </div>
         <div class="col-md-6">
             <div class="form-group">
-                <label>City</label>
+                <label>City <label style="color:red" pull-right>*)</label></label>
                 <input type="text" class="form-control" name="city" value="{{$basic['city']}}" required>
             </div>
             <div class="form-group">
-                <label>Profession</label>
+                <label>Profession <label style="color:red" pull-right>*)</label></label>
                 <input type="text" class="form-control" name="profession" value="{{$basic['profession']}}" required>
             </div>
             <div class="form-group">
@@ -61,12 +61,13 @@
                 <input type="text" class="form-control" name="portfoliolinks" value="{{$basic['portfoliolinks']}}">
             </div>
             <div class="form-group">
-                <label>Address</label>
+                <label>Address <label style="color:red" pull-right>*)</label></label>
                 <textarea rows="3" class="form-control" name="address" value="" required>{{$basic['address']}}</textarea>
             </div>
             <div class="form-group">
                 <label>Tell Us About You</label>
-                <textarea rows="3" class="form-control" name="aboutme" value="">{{$basic['aboutme']}}</textarea>
+                <textarea rows="3" class="form-control" name="aboutme" value="">{{$basic['aboutme']}}</textarea><br>
+                <label><label style="color:red" pull-right>*)</label> : required fields</label>
             </div>
             <div class="box-footer">
                 <button type="submit" class="btn btn-primary pull-right mb-3">Save</button>

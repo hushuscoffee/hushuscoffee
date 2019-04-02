@@ -32,7 +32,10 @@
         font-size: 15px;
         resize: none;
     }
-    img { width: 100%; height: auto; }
+    .cover-image {
+        width: 100%;
+        height: auto;
+    }
 </style>
 @endsection
  
@@ -68,7 +71,7 @@
     <div class="col-md-2">
     </div>
     <div class="col-md-7">
-        <img id="image" src="{{asset('uploads/brewings/'.$brewing->image)}}">
+        <img class="cover-image" id="image" src="{{asset('uploads/brewings/'.$brewing->image)}}">
     </div>
 </div>
 <br>

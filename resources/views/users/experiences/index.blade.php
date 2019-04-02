@@ -19,7 +19,7 @@
         <form class="mb-5" role="form" method="post" action="{{ route('experience.create') }}">
             {{ csrf_field() }}
             <div class="form-group">
-                <p>Title</p>
+                <p>Title <label style="color:red" pull-right>*)</label></p>
                 <input type="text" class="form-control" id="title" required name="title">
             </div>
             <div class="form-group">
@@ -27,15 +27,15 @@
                 <input type="text" class="form-control" id="link" name="link">
             </div>
             <div class="form-group">
-                <p>Company</p>
+                <p>Company <label style="color:red" pull-right>*)</label></p>
                 <input type="text" class="form-control" id="company" required name="company">
             </div>
             <div class="form-group">
-                <p>Position</p>
+                <p>Position <label style="color:red" pull-right>*)</label></p>
                 <input type="text" class="form-control" id="position" required name="position">
             </div>
             <div class="form-group">
-                <p>Location</p>
+                <p>Location <label style="color:red" pull-right>*)</label></p>
                 <input type="text" class="form-control" id="location" required name="location">
             </div>
             <div class="custom-control custom-checkbox">
@@ -121,7 +121,8 @@
             </div>
             <div class="form-group">
                 <p>Description</p>
-                <textarea class="form-control" rows="5" id="description" name="description"></textarea>
+                <textarea class="form-control" rows="5" id="description" name="description"></textarea><br>
+                <label><label style="color:red" pull-right>*)</label> : required fields</label>
             </div>
             <button type="submit" class="btn btn-primary pull-right">Save</button>
         </form>

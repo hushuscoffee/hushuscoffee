@@ -19,7 +19,7 @@
         <form class="mb-5" method="post" action="{{ route('achievement.create') }}">
             {{ csrf_field() }}
             <div class="form-group">
-                <p>Title</p>
+                <p>Title <label style="color:red" pull-right>*)</label></p>
                 <input type="text" class="form-control" id="title" required name="title">
             </div>
             <div class="form-group">
@@ -27,7 +27,7 @@
                 <input type="text" class="form-control" id="link" name="link">
             </div>
             <div class="form-group">
-                <p>Organizer</p>
+                <p>Organizer <label style="color:red" pull-right>*)</label></p>
                 <input type="text" class="form-control" id="issuer" required name="issuer">
             </div>
             <div class="form-group">
@@ -58,8 +58,9 @@
                                   </select>
             </div>
             <div class="form-group">
-                <p>Description</p>
-                <textarea class="form-control" id="description" rows="5" name="description" required></textarea>
+                <p>Description <label style="color:red" pull-right>*)</label></p>
+                <textarea class="form-control" id="description" rows="5" name="description" required></textarea><br>
+                <label><label style="color:red" pull-right>*)</label> : required fields</label>
             </div>
             <button type="submit" class="btn btn-primary pull-right">Save</button>
         </form>
